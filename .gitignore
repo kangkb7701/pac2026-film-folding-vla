@@ -1,0 +1,17 @@
+# Personal documents and archives
+*.hwp
+*.zip
+
+# 3D printing parts and their working folder
+3D프린팅_STL/
+_카메라마운트_작업자료/
+
+# Run outputs
+remote_edge/logs/
+remote_edge/edge_camera_preview_*.png
+
+# Policy server shared secret
+remote_edge/policy_token.txt
+
+__pycache__/
+*.pyc
