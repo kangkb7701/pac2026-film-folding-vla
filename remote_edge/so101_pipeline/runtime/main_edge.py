@@ -702,6 +702,7 @@ class EdgeAgent:
         start = time.monotonic()
         self._episode_start = start
         tick, chunks_used, clamp_hits, holds, ensemble_n = 0, 0, 0, 0, 1
+        print_t, late, busy_max = start, 0, 0.0
         # Task-cycle stop: after task completion the policy extrapolates outside
         # its training data (demos end right after the place) and may drift
         # instead of settling, so the stillness detectors never fire over the
@@ -868,12 +869,19 @@ class EdgeAgent:
                 self.end_attempt(None, interventions, phase)
                 return None
 
+            # Loop timing: a tick whose work exceeds the control period is late (the recorded
+            # frame rate drops below control_fps while that happens).
+            busy = time.monotonic() - loop_t
+            late += busy > 1.0 / args.control_fps
+            busy_max = max(busy_max, busy)
             if args.print_every > 0 and tick % args.print_every == 0:
                 age = (now - t0) if chunk is not None else float("nan")
                 infer = self._infer_ms_log[-1] if self._infer_ms_log else float("nan")
                 rec = f"rec={self._rec_frames} " if self.dataset is not None else ""
+                hz = args.print_every / (loop_t - print_t) if tick else float("nan")
                 print(
-                    f"[edge {tick:04d}] {phase} {rec}chunk_age={age:5.2f}s steps={chunks_used} holds={holds} "
+                    f"[edge {tick:04d}] {phase} {rec}hz={hz:4.1f} late={late} max={busy_max * 1e3:.0f}ms "
+                    f"chunk_age={age:5.2f}s steps={chunks_used} holds={holds} "
                     f"clamps={clamp_hits} drops={self._drops_total} ens={ensemble_n} "
                     f"grip={last_sent[5]:3.0f}/{joints[5]:3.0f} infer={infer:.0f}ms "
                     f"zv={self._zero_metrics[0]:.1f}/{self._zero_metrics[1]:.1f} "
@@ -882,6 +890,7 @@ class EdgeAgent:
                     f"{self._stable_count}/{args.chunk_stability_consecutive_steps} "
                     f"link={'up' if self.client.connected.is_set() else 'DOWN'}"
                 )
+                print_t, busy_max = loop_t, 0.0
             tick += 1
             precise_sleep(max(1.0 / args.control_fps - (time.monotonic() - loop_t), 0.0))
 
