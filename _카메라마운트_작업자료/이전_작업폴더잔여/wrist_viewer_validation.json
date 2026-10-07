@@ -1,0 +1,7 @@
+{
+  "javascript_syntax": "passed",
+  "embedded_vertices_match_original_stl": "passed",
+  "normal_lengths": "passed",
+  "vertex_count": 62556,
+  "browser_render_tested": false
+}

@@ -1,0 +1,23 @@
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
+const assert = require('assert');
+const html = fs.readFileSync(path.join(__dirname,'get_two_mount_sources.html'),'utf8');
+const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+const core = script.split('for(const[key,group]')[0];
+const context = {TextEncoder,TextDecoder,Blob};
+vm.createContext(context);
+const functions = vm.runInContext(core+'\n({zipStored,crc32,inspectSTL,groups})',context);
+assert.strictEqual(functions.crc32(new TextEncoder().encode('123456789')),0xcbf43926);
+const stl=new Uint8Array(134),view=new DataView(stl.buffer);
+view.setUint32(80,1,true);
+view.setFloat32(84+8,1,true);
+view.setFloat32(84+12+12,1,true);
+view.setFloat32(84+12+24+4,1,true);
+assert.strictEqual(functions.inspectSTL(stl),1);
+assert.throws(()=>functions.inspectSTL(new TextEncoder().encode('<html>error</html>')));
+(async()=>{
+ const blob=functions.zipStored([{name:'fixture.stl',data:stl},{name:'출처.txt',data:new TextEncoder().encode('검사 파일')}]);
+ fs.writeFileSync(path.join(__dirname,'.source_downloads_fixture.zip'),Buffer.from(await blob.arrayBuffer()));
+ console.log('CRC32 known vector, STL acceptance/rejection and ZIP fixture generation passed.');
+})();

@@ -1,0 +1,30 @@
+{
+  "SO101_PiCameraV2_adapter_27mm_v0.1.stl": {
+    "triangles": 3504,
+    "vertices": 1736,
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 2820.9712,
+    "bounding_box_mm": [
+      35.0,
+      35.0,
+      3.0
+    ],
+    "physical_fit_tested": false
+  },
+  "M2_spacer_5mm_v0.1.stl": {
+    "triangles": 768,
+    "vertices": 384,
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 79.1116,
+    "bounding_box_mm": [
+      5.0,
+      5.0,
+      5.0
+    ],
+    "physical_fit_tested": false
+  }
+}

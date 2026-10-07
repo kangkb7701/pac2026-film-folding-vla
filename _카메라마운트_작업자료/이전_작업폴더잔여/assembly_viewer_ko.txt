@@ -1,0 +1,41 @@
+SO-101 + Raspberry Pi Camera Module V2 조립 미리보기
+
+SO101_PiV2_assembly_viewer.html을 더블클릭해서 크롬 또는 엣지로 엽니다.
+프로그램 설치나 로컬 서버 실행은 필요하지 않습니다.
+공식 그리퍼·모터·마운트 파일을 GitHub에서 불러오므로 인터넷 연결이 필요합니다.
+변환판과 스페이서 STL 및 단순화한 카메라 외형은 HTML 파일에 포함되어 있습니다.
+
+조작:
+- 마우스로 드래그: 회전
+- 마우스 휠: 확대/축소
+- 입체/정면/옆면/뒷면: 보는 방향 변경
+- 부품 사이 벌리기: 조립 순서를 보기 위해 부품을 떨어뜨려 표시
+- 그리퍼 벌리기: 움직이는 집게 각도 변경
+- 이미지 저장: 현재 화면을 PNG로 저장
+
+공식 부품 로드가 실패하면 화면의 안내를 확인하세요.
+아직 로드되지 않은 부품은 화면에 표시되지 않습니다.
+'공식 부품이 로드되지 않을 때'에서 지정된 원본 STL을 내려받아 선택할 수도 있습니다.
+공식 시뮬레이션 STL과 개별 출력용 STL은 좌표/단위가 다를 수 있습니다.
+화면의 링크에 있는 지정된 파일을 사용하세요.
+
+정확도:
+그리퍼, 모터, 움직이는 집게: 공식 SO101 시뮬레이션 도면의 형상과 조립 좌표.
+카메라 마운트: 공식 Optional STL, 그리퍼에 대한 배치는 커뮤니티 URDF의 참고 위치.
+변환판/스페이서: 만든 STL 형상을 그대로 사용. STEP의 27x27 mm 구멍 좌표에 맞춘 배치.
+카메라 PCB: 공식 기구 도면의 외곽/구멍 치수로 생성.
+카메라 렌즈와 커넥터: 단순화한 시각화이며 상세 부품 도면이 아닙니다.
+나사와 너트 및 실제 CSI 케이블은 생략했습니다.
+실물 출력, 체결, 간섭, 프린터 공차를 검증한 조립 모델은 아닙니다.
+PyBrain 키트의 수정된 그리퍼를 대조한 모델도 아닙니다.
+이 파일은 보는 용도입니다. 조립 전체를 한 덩어리로 출력하는 STL이 아닙니다.
+
+원본 파일을 직접 다운로드할 수 없어 브라우저에서 불러오는 방식으로 제작했습니다.
+제작 환경의 제한 때문에 브라우저 화면과 원본 STL 로드 성공 여부를 직접 확인하지 못했습니다.
+JavaScript 구문과 포함된 STL의 파싱/치수 및 변환판 구멍 배치 계산은 검사했습니다.
+
+출처:
+https://github.com/TheRobotStudio/SO-ARM100/tree/main/Simulation/SO101
+https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/SO101_Wrist_Cam_Hex-Nut_Mount_32x32_UVC_Module
+https://github.com/livekit-examples/so-frame/blob/main/simulation/urdf/so101_on_frame.urdf
+https://datasheets.raspberrypi.com/camera/camera-module-2-mechanical-drawing.pdf

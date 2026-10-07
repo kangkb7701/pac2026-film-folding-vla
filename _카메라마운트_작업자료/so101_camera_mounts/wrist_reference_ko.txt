@@ -1,0 +1,15 @@
+SO-101 일체형 고정 그리퍼 — 27mm 규격 참고용
+
+공식 원본의 중복 표면을 정리한 참고 STL입니다. 카메라별 최종 수정본은 아직 아닙니다.
+모터 몸통의 원본 표면과 카메라 구멍 좌표를 유지했습니다. 겹쳐 있던 지지대 표면 중 하나를 선택했습니다.
+구멍 중심 간격: 27 x 27mm. 구멍 지름: 약 2mm.
+출력하거나 카메라를 실제 조립한 검증은 하지 않았습니다.
+
+원본 및 조립 설명:
+https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/Wrist_Cam_Mount_32x32_UVC_Module
+원본 라이선스:
+https://github.com/TheRobotStudio/SO-ARM100/blob/main/LICENSE
+
+3D 보기: SO101_integrated_gripper_viewer.html (수정 전 원본 표시)
+치수 그림: camera_hole_dimensions.png
+검사 기록: wrist_reference_validation.json

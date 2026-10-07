@@ -1,0 +1,8 @@
+{
+  "crc32_known_vector": "passed",
+  "binary_stl_and_html_detection": "passed",
+  "zip_crc_and_utf8_names": "passed",
+  "browser_download_tested": false,
+  "original_robot_stls_downloaded": false,
+  "camera_specific_stls_generated": false
+}

@@ -1,0 +1,57 @@
+{
+  "01_하단_받침일체형_1개.stl": {
+    "triangles": 972,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 224120.354,
+    "bounds_mm": [
+      37.4,
+      230.95,
+      93.025
+    ],
+    "physical_fit_tested": false
+  },
+  "02_중단_기둥일체형_1개.stl": {
+    "triangles": 1138,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 143523.085,
+    "bounds_mm": [
+      25.4,
+      162.85,
+      36.624
+    ],
+    "physical_fit_tested": false
+  },
+  "03_상단_카메라거치대일체형_1개.stl": {
+    "triangles": 1392,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 156191.254,
+    "bounds_mm": [
+      58.026,
+      182.338,
+      36.624
+    ],
+    "physical_fit_tested": false
+  },
+  "04_책상고정클램프_2개.stl": {
+    "triangles": 23974,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 68089.641,
+    "bounds_mm": [
+      83.0000991821289,
+      88.99970245361328,
+      22.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 2,
+    "notes": "M8 x 80 fully threaded metal bolt and M8 nut; add rubber on desk contact. No tower mounting extensions.",
+    "sha256": "f49beae0bb574b574263ea82e394a32ea58ee88dc0b018a75152b69d27762aef"
+  }
+}

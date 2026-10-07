@@ -1,0 +1,22 @@
+{
+  "file": "SO101_integrated_wrist_27mm_REFERENCE_mesh_cleaned.stl",
+  "sha256": "0bc5b1435fbf4886718b3a947d0026020b87700c34202115f7c29b7c0eee06ee",
+  "source_sha256": "b4345ccf23f1f2ed3f4885c205cac5afbed6ddd1b183617c4801751e3bafb7b4",
+  "status": "Reference mesh only; neither OPEN-TS11-002 nor PyBrain fit is confirmed",
+  "changes": [
+    "Removed 1915 exact duplicate triangle copies",
+    "Selected source support sheet 4 (143 facets) instead of coincident alternative sheet 1 (103 facets); retained sheets 0, 2, 3, 4",
+    "No source vertex coordinates moved; original body sheet and camera face coordinates retained"
+  ],
+  "triangles": 18834,
+  "binary_stl_edge_manifold_and_winding_check": "passed",
+  "body_sheet_16776_facets_unchanged": true,
+  "bounding_box_unchanged": true,
+  "camera_hole_pitch_mm": [
+    27,
+    27
+  ],
+  "camera_hole_nominal_diameter_mm": 2,
+  "physical_fit_tested": false,
+  "self_intersection_check_completed": false
+}

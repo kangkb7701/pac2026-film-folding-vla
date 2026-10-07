@@ -1,0 +1,86 @@
+{
+  "measured_object": "Original supplied SO101 integrated wrist STL; NOT a measurement of either physical camera",
+  "plane_u": [
+    1.0,
+    0.0,
+    0.0
+  ],
+  "plane_v": [
+    0.0,
+    0.9063077870366499,
+    0.42261826174069944
+  ],
+  "plane_normal": [
+    0.0,
+    -0.42261826174069944,
+    0.9063077870366499
+  ],
+  "plane_offset_mm": -33.26124033671352,
+  "hole_centres_and_diameters": [
+    {
+      "centre_uv_mm": [
+        -11.000000363350889,
+        50.27919430549167
+      ],
+      "centre_xyz_mm": [
+        -11.000000363350889,
+        59.62523289943739,
+        -8.896015424551226
+      ],
+      "nominal_diameter_mm": 1.9999980602148095,
+      "circle_fit_error_mm": 2.2014723869295623e-06,
+      "boundary_vertices": 9,
+      "circular_polygon_corners": 9
+    },
+    {
+      "centre_uv_mm": [
+        15.999999636638812,
+        50.2791943054925
+      ],
+      "centre_xyz_mm": [
+        15.999999636638812,
+        59.625232899438146,
+        -8.896015424550875
+      ],
+      "nominal_diameter_mm": 1.9999980602148086,
+      "circle_fit_error_mm": 2.201472387087486e-06,
+      "boundary_vertices": 9,
+      "circular_polygon_corners": 9
+    },
+    {
+      "centre_uv_mm": [
+        -10.999999368356596,
+        77.27919493617432
+      ],
+      "centre_xyz_mm": [
+        -10.999999368356596,
+        84.09554372101954,
+        2.5146779089856643
+      ],
+      "nominal_diameter_mm": 2.000005451213326,
+      "circle_fit_error_mm": 3.6860003778466305e-06,
+      "boundary_vertices": 13,
+      "circular_polygon_corners": 9
+    },
+    {
+      "centre_uv_mm": [
+        16.00000063164146,
+        77.27919493617425
+      ],
+      "centre_xyz_mm": [
+        16.00000063164146,
+        84.09554372101948,
+        2.514677908985636
+      ],
+      "nominal_diameter_mm": 2.0000054512133247,
+      "circle_fit_error_mm": 3.686000378329708e-06,
+      "boundary_vertices": 13,
+      "circular_polygon_corners": 9
+    }
+  ],
+  "pitch_mm": [
+    27.000000994992348,
+    27.00000063068265
+  ],
+  "physical_camera_compatibility_confirmed": false
+}

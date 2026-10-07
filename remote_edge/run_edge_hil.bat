@@ -9,6 +9,6 @@ REM Add --dry_run to test without moving either arm.
 call "%~dp0run_edge.bat" ^
   --teleop_port COM5 ^
   --teleop_id bimanual_leader_left ^
-  --record_root C:/Users/kangk/lerobot_data/fold_film_onearm_hil ^
+  --record_root "%USERPROFILE%\lerobot_data\fold_film_onearm_hil" ^
   --record_repo_id kangk/fold_film_onearm_hil ^
   --duration_s 90 %*

@@ -1,0 +1,28 @@
+{
+  "units": "mm",
+  "status": "User-authorized assumed-dimension prototype; physical fit untested",
+  "board_assumed_mm": [
+    32,
+    32
+  ],
+  "nominal_hole_pitch_mm": [
+    27.0,
+    27.0
+  ],
+  "square_pitch_adjustment_nominal_mm": [
+    26,
+    28
+  ],
+  "slot_nominal_width_mm": 2.6,
+  "wrist_holes_use_source_polygon_resolution": true,
+  "stand_implicit_surface_grid_mm": 0.4,
+  "stand_height_mm": 552,
+  "stand_height_with_two_columns_mm": 372,
+  "camera_centre_from_column_rear_mm": 162,
+  "desk_thickness_nominal_mm": [
+    10,
+    45
+  ],
+  "OPEN_and_PyBrain_wrist_geometry_currently_identical": true,
+  "original_motor_body_coordinates_preserved_except_rigid_print_translation": true
+}

@@ -6,7 +6,7 @@ REM Indices can change after replugging or rebooting: re-check with "lerobot-fin
 REM Before starting: put the leader in roughly the same pose as the follower (the follower jumps to the leader pose).
 REM Before stopping (Ctrl+C): hold or lower the follower arm. Torque is released on exit and the arm will drop.
 
-call C:\Users\kangk\anaconda3\Scripts\activate.bat lerobot312
+call "%USERPROFILE%\anaconda3\Scripts\activate.bat" lerobot312
 
 lerobot-teleoperate ^
   --robot.type=so101_follower ^

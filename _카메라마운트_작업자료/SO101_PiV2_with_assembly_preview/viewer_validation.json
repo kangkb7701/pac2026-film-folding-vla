@@ -1,0 +1,18 @@
+{
+  "plateTriangles": 3504,
+  "spacerTriangles": 768,
+  "plateDimensions": [
+    35,
+    35,
+    3
+  ],
+  "spacerDimensions": [
+    5,
+    5,
+    5
+  ],
+  "holeAlignmentMaxErrorMm": 2.842170943040401e-14,
+  "coordinatesFinite": true,
+  "browserRenderingVerified": false,
+  "officialMeshesDownloaded": false
+}

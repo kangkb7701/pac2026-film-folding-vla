@@ -1,10 +1,10 @@
-# Personal documents and archives
+# Personal documents (application form with a minor's consent form)
 *.hwp
-*.zip
 
-# 3D printing parts and their working folder
-3D프린팅_STL/
-_카메라마운트_작업자료/
+# Caches and crash dumps from the 3D preview tools
+.browser-preview/
+.mplconfig/
+*.dmp
 
 # Run outputs
 remote_edge/logs/

@@ -10,7 +10,21 @@ Physical AI Challenge 2026 준비 자료입니다. 투명 비닐을 반으로 �
 - `remote_edge/`: 로봇은 노트북에서, SmolVLA 추론은 GPU 서버에서 돌리는 원격 실행 코드와 개입(DAgger) 데이터 수집 모드. 캡스톤 프로젝트 [so101-vla-pipeline](https://github.com/kangkb7701/so101-vla-pipeline)의 원격 배포 코드를 고친 것입니다. 사용법은 `remote_edge/README.md`에 있습니다.
 - `robot_scripts/`: 데이터셋 점검, 카메라 웹 뷰어, 한 팔 텔레오퍼레이션
 - `calibration/`: SO-101 캘리브레이션 파일. 오른팔 파일은 예전 버전이니 `calibration/README.md`를 보세요.
+- `3D프린팅_STL/`: 출력용 카메라 거치대(상단)와 카메라 일체형 그리퍼
+- `_카메라마운트_작업자료/`: 위 부품을 만든 작업 폴더(생성 스크립트, 원본 메시, 미리보기, 이전 버전)
+
+## 다른 PC에서 실행
+
+1. 저장소를 받습니다.
+2. `remote_edge/policy_token.txt`에 GPU 서버 토큰 한 줄을 저장합니다. 토큰은 공개 저장소에 올리지 않았습니다.
+3. bat 파일은 `%USERPROFILE%\anaconda3`의 conda 환경 `lerobot312`을 씁니다. 다른 위치에 설치했다면 각 bat의 `activate.bat` 줄을 고칩니다.
+4. 포트(COM3 팔로워, COM5 리더)와 카메라 번호(`remote_edge/edge_cameras.json`)는 PC마다 다를 수 있으니 `lerobot-find-port`와 `lerobot-find-cameras opencv`로 확인합니다.
+5. 캘리브레이션 파일은 `calibration/README.md`대로 LeRobot 캘리브레이션 폴더에 넣습니다.
+
+## 라이선스 고지
+
+3D 프린팅 부품은 [TheRobotStudio/SO-ARM100](https://github.com/TheRobotStudio/SO-ARM100)의 카메라 거치대와 SO-101 메시를 바탕으로 수정한 것입니다. 원본은 Apache License 2.0이며, 전문은 `LICENSE-SO-ARM100.txt`에 있습니다.
 
 ## 올리지 않은 것
 
-참가신청서, 3D 프린팅 파일, 학습 데이터, 실행 로그, 서버 토큰(`remote_edge/policy_token.txt`)
+참가신청서(개인정보 포함), 학습 데이터, 실행 로그, 서버 토큰, 3D 미리보기 도구의 캐시와 오류 덤프

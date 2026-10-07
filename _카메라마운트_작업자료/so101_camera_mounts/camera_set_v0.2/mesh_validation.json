@@ -1,0 +1,162 @@
+{
+  "OPEN_TS11_002/SO101_fixed_gripper_camera_slots_v0.2.stl": {
+    "triangles": 18808,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 66046.023,
+    "bounds_mm": [
+      120.2239990234375,
+      113.58719635009766,
+      65.19999694824219
+    ],
+    "physical_fit_tested": false,
+    "quantity": 1,
+    "notes": "32 mm board assumed; 27 mm nominal square pitch, diagonal adjustment for 26–28 mm; nominal slot width 2.6 mm. Source body preserved. Print on supplied side orientation with supports.",
+    "sha256": "df7a96f50783d269623deab3265783d6843af86e89d57dc3bdb6b30fe02a3aa7"
+  },
+  "PyBrain/SO101_fixed_gripper_camera_slots_v0.2.stl": {
+    "triangles": 18808,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 66046.023,
+    "bounds_mm": [
+      120.2239990234375,
+      113.58719635009766,
+      65.19999694824219
+    ],
+    "physical_fit_tested": false,
+    "quantity": 1,
+    "notes": "Same provisional geometry as OPEN version; PyBrain camera dimensions unconfirmed. 32 mm board and 27 mm nominal pitch assumed. Supports required.",
+    "sha256": "df7a96f50783d269623deab3265783d6843af86e89d57dc3bdb6b30fe02a3aa7"
+  },
+  "OPEN_TS11_002/topview/column_180mm_x3.stl": {
+    "triangles": 2648,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 96592.711,
+    "bounds_mm": [
+      60.0,
+      180.0,
+      12.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 3,
+    "notes": "Print flat. 60 x 180 x 12 mm.",
+    "sha256": "4bfdb3358dd6bc786dd95e84692583cc1fda96955b700771632660bf5e56e196"
+  },
+  "OPEN_TS11_002/topview/joint_strap_x4.stl": {
+    "triangles": 1220,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 24717.938,
+    "bounds_mm": [
+      60.0,
+      70.0,
+      6.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 4,
+    "notes": "Two straps per column joint, front and back; M4 x 35 bolts.",
+    "sha256": "687cba8b496958e9093f05d9aece4c4a2c967a0b07f6b334a38ef86ea80f67c9"
+  },
+  "OPEN_TS11_002/topview/desk_clamp_10_to_45mm_x2.stl": {
+    "triangles": 37160,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 99565.273,
+    "bounds_mm": [
+      83.0000991821289,
+      169.99940490722656,
+      22.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 2,
+    "notes": "Desk nominal 10–45 mm; M8 full-thread metal bolt and M8 metal nut required.",
+    "sha256": "762f4ba0f3607503b1f477c3bc6f650640b00bd803d47f7c11cdaa1e485499e1"
+  },
+  "OPEN_TS11_002/topview/top_arm_camera_slots_x1.stl": {
+    "triangles": 46308,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 123858.383,
+    "bounds_mm": [
+      60.000099182128906,
+      172.0,
+      80.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 1,
+    "notes": "Camera faces downward. 20 x 20 mm lens opening. Mount with M4 x 35 bolts. Assumed square camera pitch 26–28 mm.",
+    "sha256": "cadcad0ea85dd0ad23071c2a852d0910aa0c6ec7f2d4c48a4724036bc0647f4c"
+  },
+  "OPEN_TS11_002/topview/clamp_pressure_pad_x2.stl": {
+    "triangles": 10378,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 2496.476,
+    "bounds_mm": [
+      23.998199462890625,
+      23.998199462890625,
+      6.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 2,
+    "notes": "Blind recess faces the end of the M8 bolt; flat face contacts desk underside.",
+    "sha256": "f69a90c66f162d25b40637587c8a806c6f43dbb87e2bc6755ce19fde4a97d62b"
+  },
+  "OPEN_TS11_002/topview/M8_bolt_knob_optional_x2.stl": {
+    "triangles": 26368,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 8886.428,
+    "bounds_mm": [
+      35.99879837036133,
+      35.99879837036133,
+      10.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 2,
+    "notes": "Optional grip for 13 mm across-flats M8 hex bolt head; use a wrench if loose.",
+    "sha256": "f7009df28e95b881c1fe895eff7491b2ea340253bda1f4f7441c34805d8fb9be"
+  },
+  "common/M2_spacer_3mm.stl": {
+    "triangles": 384,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 68.699,
+    "bounds_mm": [
+      6.0,
+      6.0,
+      3.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 12,
+    "notes": "Default 3 mm stand-off, four per camera. 5 mm alternative for component clearance.",
+    "sha256": "6867f34a5144b2322c468dc685c4afb737896accceada7fbdd85129eb12a90d2"
+  },
+  "common/M2_spacer_5mm.stl": {
+    "triangles": 384,
+    "closed_edge_manifold": true,
+    "consistent_winding": true,
+    "connected_components": 1,
+    "volume_mm3": 114.498,
+    "bounds_mm": [
+      6.0,
+      6.0,
+      5.0
+    ],
+    "physical_fit_tested": false,
+    "quantity": 0,
+    "notes": "Default 3 mm stand-off, four per camera. 5 mm alternative for component clearance.",
+    "sha256": "89a5ada54aacca12c6be2117197e1f0d2e908488c78f8ba6f89c031abc51e831"
+  }
+}

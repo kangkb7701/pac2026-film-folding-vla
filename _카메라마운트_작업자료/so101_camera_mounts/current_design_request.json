@@ -1,0 +1,77 @@
+{
+  "units": "mm",
+  "requested_outputs": [
+    {
+      "id": "open_ts11_002_top_view",
+      "camera": "OPEN-TS11-002",
+      "description": "Top-view support resembling the user's three-section upright and base reference photo",
+      "base_source": "Optional/Overhead_Cam_Mount_32x32_UVC_Module/stl/",
+      "needs": [
+        "Camera board mechanical dimensions and mounting-hole coordinates",
+        "Original STL assets available locally"
+      ],
+      "status": "Original design identified; final camera-specific STL not generated"
+    },
+    {
+      "id": "open_ts11_002_integrated_gripper",
+      "camera": "OPEN-TS11-002",
+      "description": "SO101 fixed jaw and servo body with camera mount merged into one printable solid; moving jaw excluded",
+      "base_source": "Optional/Wrist_Cam_Mount_32x32_UVC_Module/stl/Wrist_Cam_Mount_32x32_UVC_Module_SO101.stl",
+      "needs": [
+        "Camera board mechanical dimensions and mounting-hole coordinates"
+      ],
+      "status": "Original STL received and inspected; cleaned 27 mm reference exported; camera-specific compatibility pending"
+    },
+    {
+      "id": "pybrain_integrated_gripper",
+      "camera": "PyBrain kit USB camera; model not confirmed",
+      "description": "SO101 fixed jaw and servo body with camera mount merged into one printable solid; moving jaw excluded",
+      "base_source": "Optional/Wrist_Cam_Mount_32x32_UVC_Module/stl/Wrist_Cam_Mount_32x32_UVC_Module_SO101.stl",
+      "needs": [
+        "PyBrain camera mounting-hole coordinates"
+      ],
+      "status": "Original STL received and inspected; cleaned 27 mm reference exported; camera-specific compatibility pending"
+    }
+  ],
+  "open_ts11_002_dimensions": {
+    "board_width": null,
+    "board_height": null,
+    "mounting_holes": null,
+    "lens_position": null,
+    "connector_clearance": null
+  },
+  "pybrain_dimensions": {
+    "candidate_board_size": [
+      32,
+      32
+    ],
+    "candidate_size_is_not_confirmation_for_user_unit": true,
+    "mounting_holes": null
+  },
+  "notes": [
+    "Do not substitute board outer size for hole spacing.",
+    "Do not call the old Raspberry Pi V2 adapter a deliverable for this request.",
+    "Preserve motor cavity, mounting holes, joint connection and fixed jaw geometry from the source model.",
+    "The two mounting use cases are three camera-specific variants, not three single-component STL files for the whole overhead assembly.",
+    "No physical fit or interference validation has been completed."
+  ],
+  "provided_camera_specification": {
+    "board_mm": [
+      32,
+      32
+    ],
+    "source": "User supplied product description",
+    "matching_manufacturer_model": "PCBA_1080P_PS5268_AF",
+    "matching_page": "https://www.usbzwak.com/ko/2mp-auto-focus-usb-camera-module-0003lux-low-light-1080p-dynamic-range-86db-hd-web-camera-free-driver",
+    "identity_with_OPEN_TS11_002_confirmed": false,
+    "mounting_holes": null
+  },
+  "original_wrist_measurements": {
+    "pitch_mm": [
+      27,
+      27
+    ],
+    "nominal_hole_diameter_mm": 2,
+    "camera_compatibility_confirmed": false
+  }
+}

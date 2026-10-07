@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'),path=require('path');const h=fs.readFileSync(path.join(__dirname,'미리보기.html'),'utf8');for(const m of h.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(m[1]);console.log('Viewer JavaScript syntax passed');

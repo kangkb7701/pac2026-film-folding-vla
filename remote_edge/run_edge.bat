@@ -8,7 +8,7 @@ set /p POLICY_TOKEN=<"%~dp0policy_token.txt"
 REM Camera indices come from edge_cameras.json (top=1, wrist=2). Re-check after replugging.
 REM Add --dry_run to test the link without moving the robot.
 
-call C:\Users\kangk\anaconda3\Scripts\activate.bat lerobot312
+call "%USERPROFILE%\anaconda3\Scripts\activate.bat" lerobot312
 cd /d "%~dp0"
 set PYTHONIOENCODING=utf-8
 

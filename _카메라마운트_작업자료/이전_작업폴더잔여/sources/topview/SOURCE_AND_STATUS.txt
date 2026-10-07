@@ -1,0 +1,6 @@
+수정 전 공식 STL 원본입니다.
+출처: https://github.com/TheRobotStudio/SO-ARM100/blob/main/Optional/Overhead_Cam_Mount_32x32_UVC_Module/
+다운로드 시각: 2026-10-03T14:09:23.759Z
+
+카메라 나사 간격과 PyBrain 실물 호환성은 확인하지 않았습니다.
+메시의 폐곡면 및 실물 조립 검사를 수행한 수정본이 아닙니다.
