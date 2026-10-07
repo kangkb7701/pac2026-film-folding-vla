@@ -1014,7 +1014,7 @@ def main() -> None:
     parser.add_argument("--server_url", default=os.getenv("ACT_SERVER_URL", "ws://127.0.0.1:8765"))
     parser.add_argument("--token", default=os.getenv("POLICY_TOKEN"), help="Shared secret the policy server checks on every request.")
     parser.add_argument("--teleop_port", default=None, help="Leader arm port (e.g. COM5). Enables intervention mode.")
-    parser.add_argument("--teleop_id", default="bimanual_leader_left", help="Leader calibration id.")
+    parser.add_argument("--teleop_id", default="bimanual_leader_right", help="Leader calibration id.")
     parser.add_argument("--record_root", default=None, help="Record every attempt (policy + human frames) into this LeRobot dataset folder; resumes if it exists.")
     parser.add_argument("--record_repo_id", default="kangk/fold_film_onearm_hil")
     parser.add_argument("--video_encoding_batch_size", type=int, default=1, help="1 = encode each attempt while the arm is back home. LeRobot 0.6.1 fails to finalize a partially filled batch (>1), so keep 1.")

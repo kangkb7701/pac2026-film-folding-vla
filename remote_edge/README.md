@@ -113,6 +113,6 @@ python pac_policy_server.py --host 100.81.190.27 --port 8765 --token <토큰> --
 
 - **노트북 로그에 `policy link down`이 반복됨:** 서버가 꺼져 있거나 Tailscale이 끊긴 것입니다. 노트북에서 `tailscale ping 100.81.190.27`로 연결부터 확인합니다.
 - **서버 로그에 `rejected ...: wrong or missing token`:** 노트북과 서버의 토큰이 다르거나, 모르는 곳에서 접속을 시도한 것입니다.
-- **`motor calibration mismatch`:** `--robot_id`가 캘리브레이션 파일 이름(`bimanual_follower_left`)과 다르거나 다른 팔이 COM3에 꽂힌 것입니다.
+- **`motor calibration mismatch`:** `--robot_id`가 캘리브레이션 파일 이름(`bimanual_follower_right`)과 다르거나 다른 팔이 COM3에 꽂힌 것입니다.
 - **카메라 에러:** USB를 다시 꽂으면 번호가 바뀔 수 있습니다. `lerobot-find-cameras opencv`로 확인하고 `edge_cameras.json`을 고칩니다.
 - **`no chunk within 15s`:** 서버가 첫 응답을 못 줬습니다. 서버 로그에 `predict failed`가 있는지 봅니다.
