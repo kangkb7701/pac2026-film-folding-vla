@@ -1,0 +1,500 @@
+[
+ {
+  "episode_index": 0,
+  "success": false,
+  "frames": 308,
+  "interventions": []
+ },
+ {
+  "episode_index": 1,
+  "success": false,
+  "frames": 335,
+  "interventions": []
+ },
+ {
+  "episode_index": 2,
+  "success": false,
+  "frames": 344,
+  "interventions": []
+ },
+ {
+  "episode_index": 3,
+  "success": true,
+  "frames": 319,
+  "interventions": []
+ },
+ {
+  "episode_index": 4,
+  "success": false,
+  "frames": 639,
+  "interventions": []
+ },
+ {
+  "episode_index": 5,
+  "success": false,
+  "frames": 459,
+  "interventions": []
+ },
+ {
+  "episode_index": 6,
+  "success": false,
+  "frames": 369,
+  "interventions": []
+ },
+ {
+  "episode_index": 7,
+  "success": false,
+  "frames": 338,
+  "interventions": []
+ },
+ {
+  "episode_index": 8,
+  "success": true,
+  "frames": 337,
+  "interventions": []
+ },
+ {
+  "episode_index": 9,
+  "success": false,
+  "frames": 355,
+  "interventions": []
+ },
+ {
+  "episode_index": 10,
+  "success": true,
+  "frames": 669,
+  "interventions": [
+   [
+    304,
+    669
+   ]
+  ]
+ },
+ {
+  "episode_index": 11,
+  "success": true,
+  "frames": 812,
+  "interventions": [
+   [
+    160,
+    812
+   ]
+  ]
+ },
+ {
+  "episode_index": 12,
+  "success": true,
+  "frames": 584,
+  "interventions": [
+   [
+    148,
+    584
+   ]
+  ]
+ },
+ {
+  "episode_index": 13,
+  "success": true,
+  "frames": 532,
+  "interventions": [
+   [
+    157,
+    532
+   ]
+  ]
+ },
+ {
+  "episode_index": 14,
+  "success": true,
+  "frames": 634,
+  "interventions": [
+   [
+    178,
+    634
+   ]
+  ]
+ },
+ {
+  "episode_index": 15,
+  "success": true,
+  "frames": 325,
+  "interventions": []
+ },
+ {
+  "episode_index": 16,
+  "success": true,
+  "frames": 504,
+  "interventions": [
+   [
+    157,
+    504
+   ]
+  ]
+ },
+ {
+  "episode_index": 17,
+  "success": true,
+  "frames": 329,
+  "interventions": []
+ },
+ {
+  "episode_index": 18,
+  "success": true,
+  "frames": 585,
+  "interventions": [
+   [
+    378,
+    585
+   ]
+  ]
+ },
+ {
+  "episode_index": 19,
+  "success": true,
+  "frames": 435,
+  "interventions": [
+   [
+    267,
+    435
+   ]
+  ]
+ },
+ {
+  "episode_index": 20,
+  "success": true,
+  "frames": 677,
+  "interventions": [
+   [
+    251,
+    677
+   ]
+  ]
+ },
+ {
+  "episode_index": 21,
+  "success": false,
+  "frames": 174,
+  "interventions": []
+ },
+ {
+  "episode_index": 22,
+  "success": true,
+  "frames": 553,
+  "interventions": [
+   [
+    267,
+    553
+   ]
+  ]
+ },
+ {
+  "episode_index": 23,
+  "success": false,
+  "frames": 678,
+  "interventions": [
+   [
+    312,
+    678
+   ]
+  ]
+ },
+ {
+  "episode_index": 24,
+  "success": true,
+  "frames": 513,
+  "interventions": [
+   [
+    196,
+    513
+   ]
+  ]
+ },
+ {
+  "episode_index": 25,
+  "success": true,
+  "frames": 569,
+  "interventions": [
+   [
+    438,
+    569
+   ]
+  ]
+ },
+ {
+  "episode_index": 26,
+  "success": true,
+  "frames": 612,
+  "interventions": [
+   [
+    324,
+    612
+   ]
+  ]
+ },
+ {
+  "episode_index": 27,
+  "success": true,
+  "frames": 611,
+  "interventions": [
+   [
+    259,
+    611
+   ]
+  ]
+ },
+ {
+  "episode_index": 28,
+  "success": true,
+  "frames": 573,
+  "interventions": [
+   [
+    198,
+    573
+   ]
+  ]
+ },
+ {
+  "episode_index": 29,
+  "success": true,
+  "frames": 708,
+  "interventions": []
+ },
+ {
+  "episode_index": 30,
+  "success": true,
+  "frames": 554,
+  "interventions": [
+   [
+    299,
+    554
+   ]
+  ]
+ },
+ {
+  "episode_index": 31,
+  "success": true,
+  "frames": 342,
+  "interventions": []
+ },
+ {
+  "episode_index": 32,
+  "success": true,
+  "frames": 498,
+  "interventions": [
+   [
+    280,
+    498
+   ]
+  ]
+ },
+ {
+  "episode_index": 33,
+  "success": true,
+  "frames": 576,
+  "interventions": [
+   [
+    255,
+    576
+   ]
+  ]
+ },
+ {
+  "episode_index": 34,
+  "success": true,
+  "frames": 596,
+  "interventions": [
+   [
+    262,
+    596
+   ]
+  ]
+ },
+ {
+  "episode_index": 35,
+  "success": true,
+  "frames": 571,
+  "interventions": [
+   [
+    300,
+    571
+   ]
+  ]
+ },
+ {
+  "episode_index": 36,
+  "success": true,
+  "frames": 548,
+  "interventions": [
+   [
+    291,
+    548
+   ]
+  ]
+ },
+ {
+  "episode_index": 37,
+  "success": true,
+  "frames": 646,
+  "interventions": [
+   [
+    260,
+    646
+   ]
+  ]
+ },
+ {
+  "episode_index": 38,
+  "success": true,
+  "frames": 508,
+  "interventions": [
+   [
+    136,
+    508
+   ]
+  ]
+ },
+ {
+  "episode_index": 39,
+  "success": true,
+  "frames": 407,
+  "interventions": [
+   [
+    148,
+    407
+   ]
+  ]
+ },
+ {
+  "episode_index": 40,
+  "success": true,
+  "frames": 393,
+  "interventions": [
+   [
+    158,
+    393
+   ]
+  ]
+ },
+ {
+  "episode_index": 41,
+  "success": true,
+  "frames": 392,
+  "interventions": [
+   [
+    257,
+    392
+   ]
+  ]
+ },
+ {
+  "episode_index": 42,
+  "success": true,
+  "frames": 272,
+  "interventions": []
+ },
+ {
+  "episode_index": 43,
+  "success": true,
+  "frames": 516,
+  "interventions": [
+   [
+    173,
+    516
+   ]
+  ]
+ },
+ {
+  "episode_index": 44,
+  "success": true,
+  "frames": 481,
+  "interventions": [
+   [
+    167,
+    481
+   ]
+  ]
+ },
+ {
+  "episode_index": 45,
+  "success": true,
+  "frames": 635,
+  "interventions": [
+   [
+    174,
+    635
+   ]
+  ]
+ },
+ {
+  "episode_index": 46,
+  "success": true,
+  "frames": 524,
+  "interventions": [
+   [
+    132,
+    524
+   ]
+  ]
+ },
+ {
+  "episode_index": 47,
+  "success": true,
+  "frames": 478,
+  "interventions": [
+   [
+    181,
+    478
+   ]
+  ]
+ },
+ {
+  "episode_index": 48,
+  "success": true,
+  "frames": 632,
+  "interventions": [
+   [
+    265,
+    632
+   ]
+  ]
+ },
+ {
+  "episode_index": 49,
+  "success": true,
+  "frames": 480,
+  "interventions": [
+   [
+    161,
+    480
+   ]
+  ]
+ },
+ {
+  "episode_index": 50,
+  "success": true,
+  "frames": 522,
+  "interventions": [
+   [
+    154,
+    522
+   ]
+  ]
+ },
+ {
+  "episode_index": 51,
+  "success": true,
+  "frames": 472,
+  "interventions": [
+   [
+    165,
+    472
+   ]
+  ]
+ },
+ {
+  "episode_index": 52,
+  "success": true,
+  "frames": 388,
+  "interventions": []
+ }
+]
