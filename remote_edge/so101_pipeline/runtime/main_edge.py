@@ -30,9 +30,9 @@ start this agent with --dry_run (never enables torque, never writes goals).
 from __future__ import annotations
 
 import argparse
-import contextlib
 import json
 import queue
+import shutil
 import threading
 import time
 from pathlib import Path
@@ -46,7 +46,7 @@ from so101_pipeline.interfaces.edge_app_backend import CommandStore, build_app, 
 from lerobot.cameras.configs import Cv2Backends
 from lerobot.cameras.opencv.configuration_opencv import OpenCVCameraConfig
 from lerobot.common.control_utils import teleop_smooth_move_to
-from lerobot.datasets import LeRobotDataset, VideoEncodingManager
+from lerobot.datasets import LeRobotDataset
 from lerobot.robots import make_robot_from_config
 from lerobot.robots.so_follower.config_so_follower import SOFollowerRobotConfig
 from lerobot.teleoperators import make_teleoperator_from_config
@@ -463,12 +463,18 @@ class EdgeAgent:
         features = {**hw_to_dataset_features(joints, ACTION), **hw_to_dataset_features({**joints, **cams}, OBS_STR)}
         root = Path(args.record_root)
         writer = dict(batch_encoding_size=args.video_encoding_batch_size, image_writer_threads=4 * len(cams))
+        self._writer_kwargs = writer
         if (root / "meta" / "info.json").exists():
             self.dataset = LeRobotDataset.resume(args.record_repo_id, root=root, **writer)
         else:
             self.dataset = LeRobotDataset.create(
                 args.record_repo_id, args.control_fps, features=features, root=root, robot_type=self.robot.name, **writer
             )
+        # Staged frames left by a killed attempt would be globbed into the next episode's video
+        # (same episode index); every saved attempt is already encoded and finalized, so drop them.
+        if (root / "images").exists():
+            shutil.rmtree(root / "images")
+            print("removed staged frames of an unfinished attempt from the last session")
         self._labels_path = root / "hil_labels.json"
         self._labels = json.loads(self._labels_path.read_text()) if self._labels_path.exists() else []
         print(f"recording to {root} ({self.dataset.num_episodes} episodes so far)")
@@ -495,6 +501,9 @@ class EdgeAgent:
             print("attempt discarded (not saved)")
         else:
             self.dataset.save_episode()
+            # Commit now: LeRobot keeps the data parquet open and buffers episode metadata until
+            # finalize(), so a killed process (window closed) would otherwise lose the whole session.
+            self.dataset.finalize()
             entry = {
                 "episode_index": self.dataset.num_episodes - 1,
                 "success": outcome == "success",
@@ -506,6 +515,9 @@ class EdgeAgent:
             print(
                 f"saved episode {entry['episode_index']}: {outcome}, "
                 f"{len(interventions)} intervention(s), {self._rec_frames} frames"
+            )
+            self.dataset = LeRobotDataset.resume(
+                self.args.record_repo_id, root=Path(self.args.record_root), **self._writer_kwargs
             )
         self._rec_frames = 0
 
@@ -905,63 +917,64 @@ class EdgeAgent:
         for allowed in ACT_ALLOWED_TASKS:
             print(f"  - {allowed}")
 
-        # Encodes the last batch of episodes and cleans up an interrupted attempt on exit.
-        recording = VideoEncodingManager(self.dataset) if self.dataset is not None else contextlib.nullcontext()
         try:
-            with recording:
-                while True:
-                    # idle: keep the app camera view alive at ~10fps. A stalled
-                    # camera must not take the app backend down with it - the
-                    # operator needs the app to stay up to see something is wrong -
-                    # so idle only warns and keeps serving the last frame.
-                    frames = self.read_frames()
-                    if frames is not None:
-                        self.publish_app_frame(frames)
+            while True:
+                # idle: keep the app camera view alive at ~10fps. A stalled
+                # camera must not take the app backend down with it - the
+                # operator needs the app to stay up to see something is wrong -
+                # so idle only warns and keeps serving the last frame.
+                frames = self.read_frames()
+                if frames is not None:
+                    self.publish_app_frame(frames)
 
-                    task, quit_requested = None, False
-                    while not self.events.empty():
-                        event = self.events.get_nowait()
-                        if event == "start":
-                            task = ACT_ALLOWED_TASKS[0]
-                        elif event == "quit":
-                            quit_requested = True
-                        else:
-                            print(f"key {event!r} ignored (no attempt running; Enter starts one)")
-                    if quit_requested:
-                        print("quit requested")
-                        break
+                task, quit_requested = None, False
+                while not self.events.empty():
+                    event = self.events.get_nowait()
+                    if event == "start":
+                        task = ACT_ALLOWED_TASKS[0]
+                    elif event == "quit":
+                        quit_requested = True
+                    else:
+                        print(f"key {event!r} ignored (no attempt running; Enter starts one)")
+                if quit_requested:
+                    print("quit requested")
+                    break
 
-                    state = self.store.snapshot()
-                    instruction = state["instruction"] or {}
-                    ts, text = instruction.get("ts"), (instruction.get("text") or "").strip()
-                    if ts and ts != consumed_instruction_ts:
-                        consumed_instruction_ts = ts
-                        # Exact task strings pass through untouched (normalize_command lowercases
-                        # and only knows the capstone banana tasks).
-                        task = text if text in ACT_ALLOWED_TASKS else normalize_command(text)
-                        if task not in ACT_ALLOWED_TASKS:
-                            print(f"unsupported app command ignored: {text!r}")
-                            task = None
-                        elif task != text:
-                            print(f"command normalized: {text!r} -> {task!r}")
-                    if task is not None:
-                        # A stop pressed while idle must not abort the episode that starts now.
-                        consumed_stop_ts = self.store.snapshot()["stop"].get("ts")
-                        stop_ts = self.run_episode(task, consumed_stop_ts)
-                        if stop_ts:
-                            consumed_stop_ts = stop_ts
-                        self.move_home("episode finished")
-                        if self._pending_save is not None:
-                            print("saving the attempt (video encoding) - wait for 'ready'...")
-                            self.save_attempt(*self._pending_save)
-                            self._pending_save = None
-                            while not self.events.empty():  # keys pressed while saving would act unseen
-                                self.events.get_nowait()
-                        print("ready for next app command" + (" (Enter = next attempt)" if self.teleop else ""))
-                    time.sleep(0.1)
+                state = self.store.snapshot()
+                instruction = state["instruction"] or {}
+                ts, text = instruction.get("ts"), (instruction.get("text") or "").strip()
+                if ts and ts != consumed_instruction_ts:
+                    consumed_instruction_ts = ts
+                    # Exact task strings pass through untouched (normalize_command lowercases
+                    # and only knows the capstone banana tasks).
+                    task = text if text in ACT_ALLOWED_TASKS else normalize_command(text)
+                    if task not in ACT_ALLOWED_TASKS:
+                        print(f"unsupported app command ignored: {text!r}")
+                        task = None
+                    elif task != text:
+                        print(f"command normalized: {text!r} -> {task!r}")
+                if task is not None:
+                    # A stop pressed while idle must not abort the episode that starts now.
+                    consumed_stop_ts = self.store.snapshot()["stop"].get("ts")
+                    stop_ts = self.run_episode(task, consumed_stop_ts)
+                    if stop_ts:
+                        consumed_stop_ts = stop_ts
+                    self.move_home("episode finished")
+                    if self._pending_save is not None:
+                        print("saving the attempt (video encoding) - wait for 'ready'...")
+                        self.save_attempt(*self._pending_save)
+                        self._pending_save = None
+                        while not self.events.empty():  # keys pressed while saving would act unseen
+                            self.events.get_nowait()
+                    print("ready for next app command" + (" (Enter = next attempt)" if self.teleop else ""))
+                time.sleep(0.1)
         except KeyboardInterrupt:
             print("interrupted")
         finally:
+            if self.dataset is not None:
+                if self._rec_frames:  # an unlabeled attempt was in progress: drop its staged frames
+                    self.dataset.clear_episode_buffer()
+                self.dataset.finalize()
             if self.teleop is not None and self.teleop.is_connected:
                 self.release_leader()
                 self.teleop.disconnect()
