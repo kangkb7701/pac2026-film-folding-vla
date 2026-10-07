@@ -15,7 +15,7 @@ set PYTHONIOENCODING=utf-8
 python -m so101_pipeline.runtime.main_edge ^
   --server_url %SERVER_URL% ^
   --robot_port COM3 ^
-  --robot_id bimanual_follower_left ^
+  --robot_id bimanual_follower_right ^
   --app_host 127.0.0.1 ^
   --control_fps 30 ^
   --duration_s 40 ^
