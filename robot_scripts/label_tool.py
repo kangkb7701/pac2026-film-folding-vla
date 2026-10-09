@@ -19,19 +19,25 @@ import uvicorn
 from fastapi import Body, FastAPI, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
 
-# Film events (in order). Each stage runs from one event to the next; see export_sarm_labels.py.
+# Competition task: tear one plastic bag off the roll, fold it in half twice, place it on the target.
+# The overall task string must match the recordings exactly.
+TASK = "Tear off, fold, and place the plastic bag."
+# Moments to mark (in order). Each stage runs from one marked moment to the next; see export_sarm_labels.py.
 EVENTS = [
-    {"key": "start", "name": "출발", "desc": "팔이 움직이기 시작"},
-    {"key": "lift", "name": "뜸", "desc": "비닐 가장자리가 들림"},
-    {"key": "laid", "name": "얹힘", "desc": "접힌 쪽이 반대쪽 절반 위에 얹힘"},
-    {"key": "release", "name": "놓음", "desc": "그리퍼가 놓고 팔이 떠남"},
-    {"key": "rest", "name": "복귀", "desc": "팔이 쉬는 자세로 돌아옴"},
+    {"key": "start", "name": "시작", "desc": "팔이 비닐을 향해 움직이기 시작 (끌어오기 시작)"},
+    {"key": "pulled", "name": "끌어옴", "desc": "두 그리퍼가 비닐을 쥐고 왼팔 앞까지 끌어온 상태 (뜯기 시작)"},
+    {"key": "torn", "name": "뜯김", "desc": "비닐 한 장이 롤에서 완전히 떨어진 순간 (펴 놓기 시작)"},
+    {"key": "laid", "name": "펴 놓음", "desc": "가운데에 펴 놓고 그리퍼를 뗀 순간 (접기 시작)"},
+    {"key": "folded", "name": "접음", "desc": "두 번 접어 1/4 크기로 만들고 그리퍼를 뗀 순간 (옮겨 놓기 시작)"},
+    {"key": "placed", "name": "놓음", "desc": "목표 위치에 놓고 그리퍼를 뗀 순간 (완료)"},
 ]
+# Stage k starts at EVENTS[k]. "instruction" is the per-stage task string for the policy.
 STAGES = [
-    {"key": "reach_lift", "name": "다가가 들기"},
-    {"key": "fold_over", "name": "넘기기"},
-    {"key": "place_adjust", "name": "얹고 정리"},
-    {"key": "retreat", "name": "물러나기"},
+    {"key": "pull_out", "name": "끌어오기", "instruction": "Pull out the plastic bag."},
+    {"key": "tear_off", "name": "뜯기", "instruction": "Tear off the plastic bag."},
+    {"key": "lay_flat", "name": "펴 놓기", "instruction": "Lay the plastic bag flat."},
+    {"key": "fold_twice", "name": "접기", "instruction": "Fold the plastic bag twice."},
+    {"key": "place", "name": "옮겨 놓기", "instruction": "Place the plastic bag on the target."},
 ]
 OUTCOMES = {
     "success": "성공",
@@ -79,7 +85,14 @@ def make_app(root: Path) -> FastAPI:
 
     @app.get("/api/meta")
     def api_meta():
-        return {**meta, "events": EVENTS, "stages": STAGES, "outcomes": OUTCOMES, "labels": read_labels()["episodes"]}
+        return {
+            **meta,
+            "task": TASK,
+            "events": EVENTS,
+            "stages": STAGES,
+            "outcomes": OUTCOMES,
+            "labels": read_labels()["episodes"],
+        }
 
     @app.post("/api/label/{episode}")
     def api_label(episode: int, label: dict = Body(...)):

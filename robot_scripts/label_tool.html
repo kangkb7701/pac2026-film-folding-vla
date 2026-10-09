@@ -8,7 +8,7 @@
   :root {
     --bg: #f6f7f9; --panel: #ffffff; --text: #1d2330; --muted: #6b7280; --line: #d9dde3;
     --accent: #2563eb; --cursor: #dc2626; --hil: rgba(245, 158, 11, 0.28); --progress: #111827;
-    --s0: #93c5fd; --s1: #86efac; --s2: #fcd34d; --s3: #c4b5fd;
+    --s0: #93c5fd; --s1: #86efac; --s2: #fcd34d; --s3: #c4b5fd; --s4: #f9a8d4;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, "Malgun Gothic", sans-serif; }
@@ -46,6 +46,7 @@
   <select id="epSel"></select>
   <button id="next">다음 (N) ▶</button>
   <span id="summary" class="saved"></span>
+  <span class="saved">과제: <code id="task"></code></span>
   <span style="flex:1"></span>
   <span>재생 속도</span>
   <select id="rate"><option>0.5</option><option selected>1</option><option>2</option></select>
@@ -59,7 +60,7 @@
   <div class="status">
     <span>프레임 <b id="frame">0</b> / <span id="len">0</span></span>
     <span>시간 <b id="time">0.00</b>s</span>
-    <span>단계 <b id="stage">-</b></span>
+    <span>단계 <b id="stage">-</b> <span id="instr" class="saved"></span></span>
     <span>진행도 <b id="prog">-</b></span>
     <span id="hilInfo" class="warn"></span>
   </div>
@@ -82,7 +83,7 @@
 const $ = (id) => document.getElementById(id);
 const v1 = $("v1"), v2 = $("v2"), tl = $("tl");
 let meta, ep, label, epPos = 0, playing = false;
-const stageColors = ["--s0", "--s1", "--s2", "--s3"].map((v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+const stageColors = ["--s0", "--s1", "--s2", "--s3", "--s4"].map((v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
 
 function eventIndex(type) { return meta.events.findIndex((e) => e.key === type); }
 
@@ -175,7 +176,7 @@ function draw(f = curFrame()) {
   // stage bands
   const ev = label.events;
   for (let i = 0; i + 1 < ev.length; i++) {
-    g.fillStyle = stageColors[Math.min(eventIndex(ev[i].type), 3)];
+    g.fillStyle = stageColors[Math.min(eventIndex(ev[i].type), meta.stages.length - 1) % stageColors.length];
     g.fillRect(x(ev[i].frame), bandY, x(ev[i + 1].frame) - x(ev[i].frame), bandH);
   }
   g.strokeStyle = "#d9dde3"; g.strokeRect(pad, bandY, W - 2 * pad, bandH);
@@ -204,6 +205,7 @@ function draw(f = curFrame()) {
   $("frame").textContent = f; $("time").textContent = (f / meta.fps).toFixed(2);
   const s = stageAt(f);
   $("stage").textContent = s < 0 ? "시작 전" : s >= meta.stages.length ? "끝" : meta.stages[s].name;
+  $("instr").textContent = s >= 0 && s < meta.stages.length ? meta.stages[s].instruction : "";
   const p = progressAt(f, props); $("prog").textContent = p === null ? "-" : p.toFixed(2);
 }
 
@@ -223,7 +225,7 @@ function renderSide() {
     const del = document.createElement("button"); del.textContent = "삭제"; del.onclick = () => { label.events.splice(i, 1); changed(); };
     li.append(go, del); ul.appendChild(li);
   });
-  if (!label.events.length) ul.innerHTML = "<li class='saved'>아직 없음. 해당 프레임에서 1~5를 누르세요.</li>";
+  if (!label.events.length) ul.innerHTML = `<li class='saved'>아직 없음. 해당 프레임에서 1~${meta.events.length}를 누르세요.</li>`;
   const hil = meta.hil[String(ep.index)];
   $("hilInfo").textContent = hil ? `개입 녹화: ${hil.success ? "성공" : "실패"}로 저장됨, 사람 조종 구간 ${hil.interventions.length}개(주황색)` : "";
   renderEpisodeList();
@@ -329,7 +331,9 @@ window.addEventListener("resize", () => draw());
 (async () => {
   meta = await (await fetch("/api/meta")).json();
   const ev = meta.events.map((e, i) => `<div><kbd>${i + 1}</kbd> ${e.name}: ${e.desc}</div>`).join("");
-  $("keys").innerHTML = ev + `
+  const st = meta.stages.map((s) => `<div>${s.name}: <code>${s.instruction}</code></div>`).join("");
+  $("task").textContent = meta.task;
+  $("keys").innerHTML = ev + `<div style="margin-top:6px"><b>단계와 지시문</b></div>` + st + `
     <div><kbd>Space</kbd> 재생/정지</div>
     <div><kbd>←</kbd><kbd>→</kbd> 1프레임, <kbd>Shift</kbd>+화살표 10프레임</div>
     <div><kbd>Delete</kbd> 가까운 표시 지우기</div>
