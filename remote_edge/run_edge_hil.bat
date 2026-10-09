@@ -1,7 +1,7 @@
 @echo off
 REM Intervention (DAgger) data collection: policy on the GPU server, two leader arms on this laptop.
-REM Every attempt is saved as one episode (policy + human frames) in the same format as the demos;
-REM who drove each frame and the outcome go to hil_labels.json in the dataset folder.
+REM Only the human corrections of each attempt are saved, back to back as one episode, in the demo format;
+REM correction boundaries and the outcome go to hil_labels.json (split them with training/hil_spec.py).
 REM Keys (global): Enter start, Space pause/resume policy, Tab take over/hand back,
 REM                S success, F failure, Backspace discard, Esc quit.
 REM Add --dry_run to test without moving any arm.
