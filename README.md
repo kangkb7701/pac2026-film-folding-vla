@@ -26,7 +26,7 @@ Physical AI Challenge 2026 준비 자료입니다. 투명 비닐을 반으로 �
 1. 저장소를 받습니다.
 2. `remote_edge/policy_token.txt`에 GPU 서버 토큰 한 줄을 저장합니다. 토큰은 공개 저장소에 올리지 않았습니다.
 3. bat 파일은 `%USERPROFILE%\anaconda3`의 conda 환경 `lerobot312`을 씁니다. 다른 위치에 설치했다면 각 bat의 `activate.bat` 줄을 고칩니다.
-4. 포트(COM3 팔로워, COM5 리더)와 카메라 번호(`remote_edge/edge_cameras.json`)는 PC마다 다를 수 있으니 `lerobot-find-port`와 `lerobot-find-cameras opencv`로 확인합니다.
+4. 포트(팔로워 2개는 `run_edge.bat`, 리더 2개는 `run_edge_hil.bat` 위쪽)와 카메라 번호(`remote_edge/edge_cameras.json`)는 PC마다 다를 수 있으니 `lerobot-find-port`와 `run_edge.bat --identify`로 확인합니다.
 5. 캘리브레이션 파일은 `calibration/README.md`대로 LeRobot 캘리브레이션 폴더에 넣습니다.
 
 ## 라이선스 고지
