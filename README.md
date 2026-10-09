@@ -13,7 +13,7 @@ Physical AI Challenge 2026 준비 자료입니다. 투명 비닐을 반으로 �
 - `리허설_한팔_LeRobot_명령어.md`: 한 팔 리허설 명령어. 포트와 카메라 이름은 예전 설정이라, 실제 값은 `remote_edge`와 학습 방법 문서를 따릅니다.
 - `remote_edge/`: 로봇은 노트북에서, SmolVLA 추론은 GPU 서버에서 돌리는 원격 실행 코드와 개입(DAgger) 데이터 수집 모드. 캡스톤 프로젝트 [so101-vla-pipeline](https://github.com/kangkb7701/so101-vla-pipeline)의 원격 배포 코드를 고친 것입니다. 사용법은 `remote_edge/README.md`에 있습니다.
 - `robot_scripts/`: 데이터셋 점검, 카메라 웹 뷰어, 한 팔 텔레오퍼레이션, 에피소드 라벨링 도구
-    - `label_tool.bat <데이터셋 폴더>` 실행 후 http://127.0.0.1:8010 에서 영상을 보며 단계 경계 6개(시작, 끌어옴, 뜯김, 펴 놓음, 접음, 놓음)와 결과(성공, 정렬 불량, 실패, 제외)를 표시합니다. 데이터셋 폴더의 `human_labels.json`에 바로 저장됩니다. 단계와 지시문은 `SARM_사람개입데이터_정리.md`의 "대회 과제 단계와 지시문"을 보세요.
+    - `label_tool.bat <데이터셋 폴더>` 실행 후 http://127.0.0.1:8010 에서 영상을 보며 단계 경계 5개(끌어옴, 뜯김, 펴 놓음, 접음, 놓음. 에피소드 시작이 곧 끌어오기 시작)와 결과(성공, 정렬 불량, 실패, 제외)를 표시합니다. 데이터셋 폴더의 `human_labels.json`에 바로 저장됩니다. 단계와 지시문은 `SARM_사람개입데이터_정리.md`의 "대회 과제 단계와 지시문"을 보세요.
     - `python export_sarm_labels.py <데이터셋 폴더>`: 라벨을 SARM 단계 라벨(LeRobot 형식)로 데이터셋에 써 넣고, SARM 학습 옵션을 출력합니다. 쓰기 전에 `meta/episodes`를 백업합니다.
 - `datasets/fold_film_onearm_hil/`: 2026-10-07 사람 개입 데이터(LeRobot v3.0, 53 에피소드, 26,311프레임, 30fps). 0~9번은 개입 없는 기준 실행(성공 2/10)이고, 누가 조종했는지와 성공/실패는 `hil_labels.json`에 있습니다. 시연 데이터(`fold_film_onearm_demo`, 50 에피소드)와 항목이 같아 그대로 합칠 수 있으며, 합치면 에피소드 번호가 밀리니 `hil_labels.json`도 같이 맞춰야 합니다.
 - `calibration/`: SO-101 캘리브레이션 파일. 2026-10-07에 실제 팔 위치에 맞게 이름을 바꿨습니다(예전 `_left`는 실제 오른팔). `calibration/README.md`를 보세요.

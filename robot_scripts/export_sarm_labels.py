@@ -6,8 +6,8 @@ Usage (conda env lerobot312):
 Writes the same columns LeRobot's own SARM annotation script writes (dense_subtask_names,
 dense_subtask_start_frames, ...) into meta/episodes, plus meta/temporal_proportions_dense.json,
 so SARM trains with --policy.annotation_mode=dense_only. meta/episodes is backed up first.
-Each stage runs from one marked event to the next and is named after the event it starts at;
-frames before the first event get progress 0 and frames after the last event 1 (SARM rule).
+The episode start begins the first stage; each marked moment begins the next stage (label_tool.EVENTS).
+Frames after the last labeled stage get progress 1 (SARM rule).
 """
 
 import argparse
@@ -25,13 +25,14 @@ COLUMNS = ["subtask_names", "subtask_start_times", "subtask_end_times", "subtask
 
 
 def segments(events: list[dict]) -> list[tuple[str, int, int]]:
-    """[(stage, start_frame, end_frame)] between consecutive events; repeats (re-grasp) are kept."""
-    order = [e["key"] for e in EVENTS]
+    """[(stage, start_frame, end_frame)] between consecutive boundaries. The episode start (frame 0)
+    starts the first stage; each marked moment starts the stage in its `starts`. Repeats are kept."""
+    starts = {e["key"]: e["starts"] for e in EVENTS}
+    bounds = [(0, 0)] + [(e["frame"], starts[e["type"]]) for e in sorted(events, key=lambda e: e["frame"]) if e["type"] in starts]
     out = []
-    for a, b in zip(events, events[1:]):
-        k = min(order.index(a["type"]), len(STAGES) - 1)
-        if b["frame"] > a["frame"]:
-            out.append((STAGES[k]["key"], a["frame"], b["frame"]))
+    for (a, k), (b, _) in zip(bounds, bounds[1:]):
+        if k < len(STAGES) and b > a:
+            out.append((STAGES[k]["key"], a, b))
     return out
 
 
