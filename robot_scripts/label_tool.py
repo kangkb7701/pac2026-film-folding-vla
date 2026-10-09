@@ -20,16 +20,18 @@ from fastapi import Body, FastAPI, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
 
 # Competition task: tear one plastic bag off the roll, fold it in half twice, place it on the target.
-# Moments to mark (in order). Each stage runs from one marked moment to the next; see export_sarm_labels.py.
+# The episode start is the start of the first stage (pulling), so it is not marked.
+# Each marked moment starts stage `starts` (len(STAGES) = done) and ends the stage before it;
+# see export_sarm_labels.py. "0" is only for going back to pulling after the bag slips.
 EVENTS = [
-    {"key": "start", "name": "시작", "desc": "팔이 비닐을 향해 움직이기 시작 (끌어오기 시작)"},
-    {"key": "pulled", "name": "끌어옴", "desc": "두 그리퍼가 비닐을 쥐고 왼팔 앞까지 끌어온 상태 (뜯기 시작)"},
-    {"key": "torn", "name": "뜯김", "desc": "비닐 한 장이 롤에서 완전히 떨어진 순간 (펴 놓기 시작)"},
-    {"key": "laid", "name": "펴 놓음", "desc": "가운데에 펴 놓고 그리퍼를 뗀 순간 (접기 시작)"},
-    {"key": "folded", "name": "접음", "desc": "두 번 접어 1/4 크기로 만들고 그리퍼를 뗀 순간 (옮겨 놓기 시작)"},
-    {"key": "placed", "name": "놓음", "desc": "목표 위치에 놓고 그리퍼를 뗀 순간 (완료)"},
+    {"key": "pulled", "hotkey": "1", "starts": 1, "name": "끌어옴", "desc": "두 그리퍼가 비닐을 쥐고 왼팔 앞까지 끌어온 순간 (뜯기 시작)"},
+    {"key": "torn", "hotkey": "2", "starts": 2, "name": "뜯김", "desc": "비닐 한 장이 롤에서 완전히 떨어진 순간 (펴 놓기 시작)"},
+    {"key": "laid", "hotkey": "3", "starts": 3, "name": "펴 놓음", "desc": "가운데에 펴 놓고 그리퍼를 뗀 순간 (접기 시작)"},
+    {"key": "folded", "hotkey": "4", "starts": 4, "name": "접음", "desc": "두 번 접어 1/4 크기로 만들고 그리퍼를 뗀 순간 (옮겨 놓기 시작)"},
+    {"key": "placed", "hotkey": "5", "starts": 5, "name": "놓음", "desc": "목표 위치에 놓고 그리퍼를 뗀 순간 (완료)"},
+    {"key": "repull", "hotkey": "0", "starts": 0, "name": "다시 끌어오기", "desc": "놓쳐서 끌어오기부터 다시 시작한 순간 (필요할 때만)"},
 ]
-# Stage k starts at EVENTS[k]. "instruction" is the per-stage task string for the policy.
+# "instruction" is the per-stage task string for the policy.
 STAGES = [
     {"key": "pull_out", "name": "끌어오기", "instruction": "Pull out the plastic bag."},
     {"key": "tear_off", "name": "뜯기", "instruction": "Tear off the plastic bag."},
