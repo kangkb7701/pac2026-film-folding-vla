@@ -89,11 +89,14 @@ const stageColors = ["--s0", "--s1", "--s2", "--s3", "--s4"].map((v) => getCompu
 
 const evDef = (type) => meta.events.find((e) => e.key === type);
 
-// Stage boundaries of a label: the episode start begins the first stage, and each marked moment
-// begins the stage in its `starts` (stages.length = done). Same rule as export_sarm_labels.py.
-function boundsOf(events) {
-  return [{ frame: 0, stage: 0 }].concat(
+// Stage boundaries of a label: the episode starts in the first subtask, each mark means "from here
+// on, this subtask" (stages.length = done), and the last subtask runs to the episode end unless
+// "완료" is marked. Same rule as export_sarm_labels.py.
+function boundsOf(events, length) {
+  const bs = [{ frame: 0, stage: 0 }].concat(
     events.filter((e) => evDef(e.type)).map((e) => ({ frame: e.frame, stage: evDef(e.type).starts })));
+  if (bs[bs.length - 1].stage < meta.stages.length) bs.push({ frame: length - 1, stage: meta.stages.length });
+  return bs;
 }
 
 // Stage proportions the way SARM sets them: average share of each stage's time over the
@@ -101,9 +104,10 @@ function boundsOf(events) {
 function proportions() {
   const n = meta.stages.length, sums = new Array(n).fill(0);
   let count = 0;
-  for (const l of Object.values(meta.labels)) {
-    if (l.outcome !== "success" || !l.events || !l.events.length) continue;
-    const bs = boundsOf(l.events), dur = new Array(n).fill(0);
+  for (const [index, l] of Object.entries(meta.labels)) {
+    const epMeta = meta.episodes.find((e) => String(e.index) === index);
+    if (l.outcome !== "success" || !l.events || !l.events.length || !epMeta) continue;
+    const bs = boundsOf(l.events, epMeta.length), dur = new Array(n).fill(0);
     for (let i = 0; i + 1 < bs.length; i++) if (bs[i].stage < n) dur[bs[i].stage] += bs[i + 1].frame - bs[i].frame;
     const total = dur.reduce((a, b) => a + b, 0);
     if (total <= 0) continue;
@@ -117,19 +121,18 @@ function proportions() {
 
 function stageAt(f) {
   let s = 0;
-  for (const b of boundsOf(label.events)) if (b.frame <= f) s = b.stage;
+  for (const b of boundsOf(label.events, ep.length)) if (b.frame <= f) s = b.stage;
   return s; // stages.length = done
 }
 
 function progressAt(f, props) {
   if (!label.events.length) return null;
-  const n = props.length, bs = boundsOf(label.events);
+  const n = props.length, bs = boundsOf(label.events, ep.length);
   const cum = props.map((_, k) => props.slice(0, k).reduce((a, b) => a + b, 0));
   for (let i = bs.length - 1; i >= 0; i--) {
     if (bs[i].frame > f) continue;
     const k = bs[i].stage, next = bs[i + 1];
-    if (k >= n) return 1;
-    if (!next) return cum[k]; // stage not closed yet (e.g. a failed episode): no further progress
+    if (k >= n || !next) return 1;
     return cum[k] + props[k] * (next.frame > bs[i].frame ? (f - bs[i].frame) / (next.frame - bs[i].frame) : 1);
   }
   return 0;
@@ -176,9 +179,9 @@ function draw(f = curFrame()) {
   const hil = meta.hil[String(ep.index)];
   if (hil) { g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--hil"); for (const [a, b] of hil.interventions) g.fillRect(x(a), plotTop, x(b) - x(a), bandY + bandH - plotTop); }
   // stage bands
-  const ev = label.events, bs = boundsOf(ev);
+  const ev = label.events, bs = boundsOf(ev, ep.length);
   for (let i = 0; i < bs.length; i++) {
-    if (bs[i].stage >= meta.stages.length || (!bs[i + 1] && !ev.length)) continue;
+    if (bs[i].stage >= meta.stages.length) continue;
     const end = bs[i + 1] ? bs[i + 1].frame : ep.length - 1;
     g.fillStyle = stageColors[bs[i].stage % stageColors.length];
     g.fillRect(x(bs[i].frame), bandY, x(end) - x(bs[i].frame), bandH);
@@ -229,7 +232,7 @@ function renderSide() {
     const del = document.createElement("button"); del.textContent = "삭제"; del.onclick = () => { label.events.splice(i, 1); changed(); };
     li.append(go, del); ul.appendChild(li);
   });
-  if (!label.events.length) ul.innerHTML = `<li class='saved'>아직 없음. 에피소드 시작이 끌어오기 시작입니다. 경계 프레임에서 1~5를 누르세요.</li>`;
+  if (!label.events.length) ul.innerHTML = `<li class='saved'>아직 없음. 에피소드는 끌어오기로 시작합니다. 다음 하위 과제가 시작되는 프레임에서 2~5를 누르세요.</li>`;
   const hil = meta.hil[String(ep.index)];
   $("hilInfo").textContent = hil ? `개입 녹화: ${hil.success ? "성공" : "실패"}로 저장됨, 사람 조종 구간 ${hil.interventions.length}개(주황색)` : "";
   renderEpisodeList();
@@ -334,7 +337,7 @@ window.addEventListener("resize", () => draw());
 
 (async () => {
   meta = await (await fetch("/api/meta")).json();
-  const ev = `<div>에피소드 시작 = 끌어오기 시작 (표시하지 않음)</div>` +
+  const ev = `<div>하위 과제가 <b>시작되는</b> 프레임에서 그 키를 누릅니다. 에피소드는 끌어오기로 시작하고, 마지막 과제는 에피소드 끝까지입니다.</div>` +
     meta.events.map((e) => `<div><kbd>${e.hotkey}</kbd> ${e.name}: ${e.desc}</div>`).join("");
   const st = meta.stages.map((s) => `<div>${s.name}: <code>${s.instruction}</code></div>`).join("");
   $("task").textContent = meta.dataset_tasks.join(" / ");

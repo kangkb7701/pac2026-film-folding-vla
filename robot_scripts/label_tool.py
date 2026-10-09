@@ -20,16 +20,17 @@ from fastapi import Body, FastAPI, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
 
 # Competition task: tear one plastic bag off the roll, fold it in half twice, place it on the target.
-# The episode start is the start of the first stage (pulling), so it is not marked.
-# Each marked moment starts stage `starts` (len(STAGES) = done) and ends the stage before it;
-# see export_sarm_labels.py. "0" is only for going back to pulling after the bag slips.
+# Each key marks "from here on, this subtask" (stage `starts`; len(STAGES) = done).
+# The episode starts in the first subtask (pulling) even without a mark, and the last marked
+# subtask runs to the episode end unless "완료" is marked; see export_sarm_labels.py.
+# Going back (e.g. pulling again after a slip) is just marking that subtask again.
 EVENTS = [
-    {"key": "pulled", "hotkey": "1", "starts": 1, "name": "끌어옴", "desc": "두 그리퍼가 비닐을 쥐고 왼팔 앞까지 끌어온 순간 (뜯기 시작)"},
-    {"key": "torn", "hotkey": "2", "starts": 2, "name": "뜯김", "desc": "비닐 한 장이 롤에서 완전히 떨어진 순간 (펴 놓기 시작)"},
-    {"key": "laid", "hotkey": "3", "starts": 3, "name": "펴 놓음", "desc": "가운데에 펴 놓고 그리퍼를 뗀 순간 (접기 시작)"},
-    {"key": "folded", "hotkey": "4", "starts": 4, "name": "접음", "desc": "두 번 접어 1/4 크기로 만들고 그리퍼를 뗀 순간 (옮겨 놓기 시작)"},
-    {"key": "placed", "hotkey": "5", "starts": 5, "name": "놓음", "desc": "목표 위치에 놓고 그리퍼를 뗀 순간 (완료)"},
-    {"key": "repull", "hotkey": "0", "starts": 0, "name": "다시 끌어오기", "desc": "놓쳐서 끌어오기부터 다시 시작한 순간 (필요할 때만)"},
+    {"key": "pull_out", "hotkey": "1", "starts": 0, "name": "끌어오기", "desc": "여기서부터 비닐 끌어오기 (에피소드 시작은 자동으로 끌어오기)"},
+    {"key": "tear_off", "hotkey": "2", "starts": 1, "name": "뜯기", "desc": "여기서부터 절취선 잡고 뜯기"},
+    {"key": "lay_flat", "hotkey": "3", "starts": 2, "name": "펴 놓기", "desc": "여기서부터 뜯은 비닐을 가운데에 펴 놓기"},
+    {"key": "fold_twice", "hotkey": "4", "starts": 3, "name": "접기", "desc": "여기서부터 두 번 접기"},
+    {"key": "place", "hotkey": "5", "starts": 4, "name": "옮겨 놓기", "desc": "여기서부터 목표 위치로 옮겨 놓기"},
+    {"key": "done", "hotkey": "6", "starts": 5, "name": "완료", "desc": "작업이 끝난 순간 (안 찍으면 에피소드 끝이 완료)"},
 ]
 # "instruction" is the per-stage task string for the policy.
 STAGES = [
