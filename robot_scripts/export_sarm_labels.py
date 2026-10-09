@@ -6,8 +6,8 @@ Usage (conda env lerobot312):
 Writes the same columns LeRobot's own SARM annotation script writes (dense_subtask_names,
 dense_subtask_start_frames, ...) into meta/episodes, plus meta/temporal_proportions_dense.json,
 so SARM trains with --policy.annotation_mode=dense_only. meta/episodes is backed up first.
-The episode start begins the first stage; each marked moment begins the next stage (label_tool.EVENTS).
-Frames after the last labeled stage get progress 1 (SARM rule).
+Each mark means "from here on, this subtask" (label_tool.EVENTS); the episode starts in the first
+subtask, and the last subtask runs to the episode end unless "done" is marked.
 """
 
 import argparse
@@ -24,11 +24,14 @@ PREFIX = "dense"
 COLUMNS = ["subtask_names", "subtask_start_times", "subtask_end_times", "subtask_start_frames", "subtask_end_frames"]
 
 
-def segments(events: list[dict]) -> list[tuple[str, int, int]]:
+def segments(events: list[dict], length: int) -> list[tuple[str, int, int]]:
     """[(stage, start_frame, end_frame)] between consecutive boundaries. The episode start (frame 0)
-    starts the first stage; each marked moment starts the stage in its `starts`. Repeats are kept."""
+    starts the first stage; each mark starts the stage in its `starts`; repeats are kept. Without a
+    "done" mark the last stage runs to the last frame of the episode."""
     starts = {e["key"]: e["starts"] for e in EVENTS}
     bounds = [(0, 0)] + [(e["frame"], starts[e["type"]]) for e in sorted(events, key=lambda e: e["frame"]) if e["type"] in starts]
+    if bounds[-1][1] < len(STAGES):
+        bounds.append((length - 1, len(STAGES)))
     out = []
     for (a, k), (b, _) in zip(bounds, bounds[1:]):
         if k < len(STAGES) and b > a:
@@ -66,6 +69,11 @@ def main() -> None:
     labels = json.loads(Path(args.labels or root / "human_labels.json").read_text(encoding="utf-8"))["episodes"]
     info = json.loads((root / "meta/info.json").read_text())
     fps = info["fps"]
+    lengths = {
+        int(r.episode_index): int(r.length)
+        for f in sorted((root / "meta/episodes").rglob("*.parquet"))
+        for r in pd.read_parquet(f, columns=["episode_index", "length"]).itertuples()
+    }
     cams = [k for k, v in info["features"].items() if v["dtype"] == "video"]
     # SARM reads one camera; the top view worked best in the SARM paper (wrist cameras did not help).
     image_key = next((k for k in cams if "top" in k), cams[0])
@@ -73,7 +81,7 @@ def main() -> None:
 
     annotated, train = {}, []
     for ep, lab in labels.items():
-        segs = segments(lab.get("events", []))
+        segs = segments(lab.get("events", []), lengths[int(ep)])
         if lab.get("outcome") in (None, "exclude") or not segs:
             continue
         annotated[int(ep)] = segs
