@@ -8,7 +8,7 @@
   :root {
     --bg: #f6f7f9; --panel: #ffffff; --text: #1d2330; --muted: #6b7280; --line: #d9dde3;
     --accent: #2563eb; --cursor: #dc2626; --hil: rgba(245, 158, 11, 0.28); --progress: #111827;
-    --s0: #93c5fd; --s1: #86efac; --s2: #fcd34d; --s3: #c4b5fd; --s4: #f9a8d4;
+    --s0: #93c5fd; --s1: #86efac; --s2: #fcd34d; --s3: #c4b5fd; --s4: #f9a8d4; --s5: #fdba74;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, "Malgun Gothic", sans-serif; }
@@ -86,7 +86,7 @@ const $ = (id) => document.getElementById(id);
 const vids = [$("v1"), $("v2"), $("v3")], v1 = vids[0], tl = $("tl");
 const shown = () => meta.cameras.slice(0, vids.length); // top first (server orders it)
 let meta, ep, label, epPos = 0, playing = false;
-const stageColors = ["--s0", "--s1", "--s2", "--s3", "--s4"].map((v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+const stageColors = ["--s0", "--s1", "--s2", "--s3", "--s4", "--s5"].map((v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
 
 const evDef = (type) => meta.events.find((e) => e.key === type);
 
@@ -233,7 +233,7 @@ function renderSide() {
     const del = document.createElement("button"); del.textContent = "삭제"; del.onclick = () => { label.events.splice(i, 1); changed(); };
     li.append(go, del); ul.appendChild(li);
   });
-  if (!label.events.length) ul.innerHTML = `<li class='saved'>아직 없음. 에피소드는 끌어오기로 시작합니다. 다음 하위 과제가 시작되는 프레임에서 2~5를 누르세요.</li>`;
+  if (!label.events.length) ul.innerHTML = `<li class='saved'>아직 없음. 에피소드는 끌어오기로 시작합니다. 다음 하위 과제가 시작되는 프레임에서 2~6을 누르세요.</li>`;
   const hil = meta.hil[String(ep.index)];
   $("hilInfo").textContent = hil ? `개입 녹화: ${hil.success ? "성공" : "실패"}로 저장됨, 사람 조종 구간 ${hil.interventions.length}개(주황색)` : "";
   renderEpisodeList();
