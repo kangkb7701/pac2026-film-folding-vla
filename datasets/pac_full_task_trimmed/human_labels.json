@@ -23,7 +23,7 @@
      "frame": 1812
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 2126
     }
    ],
@@ -53,7 +53,7 @@
      "frame": 1311
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1627
     }
    ],
@@ -83,7 +83,7 @@
      "frame": 1156
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1411
     }
    ],
@@ -109,7 +109,7 @@
      "frame": 1481
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1736
     }
    ],
@@ -135,7 +135,7 @@
      "frame": 1232
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1486
     }
    ],
@@ -161,7 +161,7 @@
      "frame": 1239
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1481
     }
    ],
@@ -187,7 +187,7 @@
      "frame": 1242
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1464
     }
    ],
@@ -217,7 +217,7 @@
      "frame": 1370
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1655
     }
    ],
@@ -243,7 +243,7 @@
      "frame": 2065
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 2296
     }
    ],
@@ -273,7 +273,7 @@
      "frame": 1766
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1997
     }
    ],
@@ -299,7 +299,7 @@
      "frame": 1312
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1526
     }
    ],
@@ -339,7 +339,7 @@
      "frame": 1478
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1726
     }
    ],
@@ -369,7 +369,7 @@
      "frame": 1822
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 2042
     }
    ],
@@ -399,7 +399,7 @@
      "frame": 1233
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1440
     }
    ],
@@ -429,7 +429,7 @@
      "frame": 1983
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 2176
     }
    ],
@@ -459,7 +459,7 @@
      "frame": 2362
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 2627
     }
    ],
@@ -489,7 +489,7 @@
      "frame": 1691
     },
     {
-     "type": "done",
+     "type": "pick_place",
      "frame": 1939
     }
    ],
