@@ -492,7 +492,9 @@ class EdgeAgent:
 
     def open_dataset(self) -> None:
         """Same features as the pac_full_task demos (top/left_wrist/right_wrist, 12 joint names, fps), so the datasets merge as is.
-        Who drove each frame and the attempt outcome go to hil_labels.json, not into the dataset."""
+        Only human-driven frames are recorded: an attempt's corrections are stored back to back as one
+        episode, and their boundaries and the attempt outcome go to hil_labels.json. Split the episodes
+        at those boundaries before training (training/hil_spec.py + build_hil_subset.py)."""
         args = self.args
         joints = {f"{n}.pos": float for n in JOINT_NAMES}
         cams = {
@@ -531,12 +533,12 @@ class EdgeAgent:
         self._rec_frames += 1
 
     def save_attempt(self, outcome: str | None, interventions: list) -> None:
-        """'success'/'failure' saves the attempt as one episode; None discards it."""
+        """'success'/'failure' saves the attempt's human frames as one episode; None discards it."""
         if self.dataset is None:
             return
         if outcome is None or self._rec_frames == 0:
             self.dataset.clear_episode_buffer()
-            print("attempt discarded (not saved)")
+            print("attempt discarded (not saved)" if outcome is None else "no human frames in this attempt - nothing saved")
         else:
             self.dataset.save_episode()
             # Commit now: LeRobot keeps the data parquet open and buffers episode metadata until
@@ -546,7 +548,7 @@ class EdgeAgent:
                 "episode_index": self.dataset.num_episodes - 1,
                 "success": outcome == "success",
                 "frames": self._rec_frames,
-                "interventions": interventions,  # [start, end) frame ranges driven by the human
+                "interventions": interventions,  # [start, end) of each correction (all frames are human-driven)
             }
             self._labels.append(entry)
             self._labels_path.write_text(json.dumps(self._labels, indent=1))
@@ -751,7 +753,7 @@ class EdgeAgent:
         grasp_since, grasped, release_t = None, False, None
         phase = "auto"  # auto: policy drives | paused: follower holds | correcting: human drives via the leader
         wait_start = start  # start of the current wait for a plan (episode start, or policy resume)
-        interventions: list = []  # [start, end) recorded-frame ranges driven by the human
+        interventions: list = []  # [start, end) recorded-frame range of each human correction
         awaiting_label = False
         t0 = 0.0
         chunk = None
@@ -873,8 +875,7 @@ class EdgeAgent:
                         self.write_joints(target)
                         last_sent = target
                         chunks_used += 1
-                        if self.dataset is not None:
-                            self.record_frame(task, joints, frames, step_target)  # policy action, as lerobot dagger
+                        # Policy frames are not recorded: only the human corrections are training data.
                     else:
                         holds += 1
                         if now - arrival > args.link_lost_home_s:
@@ -1060,7 +1061,7 @@ def main() -> None:
     parser.add_argument("--teleop_port_left", default=os.getenv("TELEOP_PORT_LEFT"), help="Left leader arm port. Both leader ports enable intervention mode.")
     parser.add_argument("--teleop_port_right", default=os.getenv("TELEOP_PORT_RIGHT"), help="Right leader arm port (e.g. COM5).")
     parser.add_argument("--teleop_id", default="bimanual_leader", help="Leader calibration id; the arms use <id>_left / <id>_right.")
-    parser.add_argument("--record_root", default=None, help="Record every attempt (policy + human frames) into this LeRobot dataset folder; resumes if it exists.")
+    parser.add_argument("--record_root", default=None, help="Record the human-driven frames of every attempt into this LeRobot dataset folder; resumes if it exists.")
     parser.add_argument("--record_repo_id", default="kangk/pac_full_task_hil")
     parser.add_argument("--video_encoding_batch_size", type=int, default=1, help="1 = encode each attempt while the arm is back home. LeRobot 0.6.1 fails to finalize a partially filled batch (>1), so keep 1.")
     parser.add_argument("--robot_port_left", default=os.getenv("ROBOT_PORT_LEFT"), help="Left follower arm port.")
