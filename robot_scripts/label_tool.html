@@ -18,7 +18,7 @@
   button { border: 1px solid var(--line); background: var(--panel); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
   button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
   main { padding: 12px 16px; max-width: 1400px; margin: 0 auto; }
-  .videos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px; }
   .videos figure { margin: 0; background: #000; border-radius: 6px; overflow: hidden; position: relative; }
   .videos video { width: 100%; display: block; }
   .videos figcaption { position: absolute; left: 8px; top: 6px; color: #fff; font-size: 12px; background: rgba(0,0,0,.45); padding: 1px 6px; border-radius: 4px; }
@@ -46,7 +46,7 @@
   <select id="epSel"></select>
   <button id="next">다음 (N) ▶</button>
   <span id="summary" class="saved"></span>
-  <span class="saved">과제: <code id="task"></code></span>
+  <span class="saved">데이터셋 지시문: <code id="task"></code></span>
   <span style="flex:1"></span>
   <span>재생 속도</span>
   <select id="rate"><option>0.5</option><option selected>1</option><option>2</option></select>
@@ -56,6 +56,7 @@
   <div class="videos">
     <figure><video id="v1" muted playsinline preload="auto"></video><figcaption id="c1"></figcaption></figure>
     <figure><video id="v2" muted playsinline preload="auto"></video><figcaption id="c2"></figcaption></figure>
+    <figure><video id="v3" muted playsinline preload="auto"></video><figcaption id="c3"></figcaption></figure>
   </div>
   <div class="status">
     <span>프레임 <b id="frame">0</b> / <span id="len">0</span></span>
@@ -81,7 +82,8 @@
 </main>
 <script>
 const $ = (id) => document.getElementById(id);
-const v1 = $("v1"), v2 = $("v2"), tl = $("tl");
+const vids = [$("v1"), $("v2"), $("v3")], v1 = vids[0], tl = $("tl");
+const shown = () => meta.cameras.slice(0, vids.length); // top first (server orders it)
 let meta, ep, label, epPos = 0, playing = false;
 const stageColors = ["--s0", "--s1", "--s2", "--s3", "--s4"].map((v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
 
@@ -138,26 +140,24 @@ function curFrame() {
 
 function seek(frame) {
   frame = Math.max(0, Math.min(ep.length - 1, frame));
-  const vids = [v1, v2];
-  meta.cameras.slice(0, 2).forEach((cam, i) => (vids[i].currentTime = ep.videos[cam].from + (frame + 0.5) / meta.fps));
+  shown().forEach((cam, i) => (vids[i].currentTime = ep.videos[cam].from + (frame + 0.5) / meta.fps));
   draw();
 }
 
 function setPlaying(on) {
   playing = on;
-  if (on) { if (curFrame() >= ep.length - 1) seek(0); v1.play(); v2.play(); }
-  else { v1.pause(); v2.pause(); seek(curFrame()); }
+  if (on) { if (curFrame() >= ep.length - 1) seek(0); shown().forEach((_, i) => vids[i].play()); }
+  else { vids.forEach((v) => v.pause()); seek(curFrame()); }
 }
 
 function tick() {
   if (playing && ep) {
     const f = curFrame(), end = ep.videos[meta.cameras[0]].to;
     if (v1.currentTime >= end - 0.5 / meta.fps) { setPlaying(false); seek(ep.length - 1); }
-    const cam2 = meta.cameras[1];
-    if (cam2) {
-      const want = ep.videos[cam2].from + (v1.currentTime - ep.videos[meta.cameras[0]].from);
-      if (Math.abs(v2.currentTime - want) > 0.08) v2.currentTime = want;
-    }
+    shown().slice(1).forEach((cam, j) => {
+      const want = ep.videos[cam].from + (v1.currentTime - ep.videos[meta.cameras[0]].from);
+      if (Math.abs(vids[j + 1].currentTime - want) > 0.08) vids[j + 1].currentTime = want;
+    });
     draw(f);
   }
   requestAnimationFrame(tick);
@@ -273,19 +273,19 @@ function removeNearest() {
 }
 
 function loadEpisode(pos) {
-  playing = false; v1.pause(); v2.pause();
+  playing = false; vids.forEach((v) => v.pause());
   epPos = Math.max(0, Math.min(meta.episodes.length - 1, pos)); ep = meta.episodes[epPos];
   const saved = meta.labels[String(ep.index)];
   label = saved ? JSON.parse(JSON.stringify(saved)) : { events: [], outcome: null, note: "" };
   $("note").value = label.note || "";
   $("len").textContent = ep.length;
-  const vids = [v1, v2];
-  meta.cameras.slice(0, 2).forEach((cam, i) => {
+  vids.forEach((v, i) => (v.parentElement.style.display = i < meta.cameras.length ? "" : "none"));
+  shown().forEach((cam, i) => {
     const url = ep.videos[cam].url;
     if (!vids[i].src.endsWith(url)) vids[i].src = url;
     $("c" + (i + 1)).textContent = cam.replace("observation.images.", "");
   });
-  v1.playbackRate = v2.playbackRate = Number($("rate").value);
+  vids.forEach((v) => (v.playbackRate = Number($("rate").value)));
   const ready = () => seek(0);
   if (v1.readyState >= 1) ready(); else v1.addEventListener("loadedmetadata", ready, { once: true });
   renderSide();
@@ -325,14 +325,14 @@ $("note").addEventListener("input", () => { label.note = $("note").value; change
 $("prev").onclick = () => loadEpisode(epPos - 1);
 $("next").onclick = () => loadEpisode(epPos + 1);
 $("epSel").onchange = () => loadEpisode(Number($("epSel").value));
-$("rate").onchange = () => (v1.playbackRate = v2.playbackRate = Number($("rate").value));
+$("rate").onchange = () => vids.forEach((v) => (v.playbackRate = Number($("rate").value)));
 window.addEventListener("resize", () => draw());
 
 (async () => {
   meta = await (await fetch("/api/meta")).json();
   const ev = meta.events.map((e, i) => `<div><kbd>${i + 1}</kbd> ${e.name}: ${e.desc}</div>`).join("");
   const st = meta.stages.map((s) => `<div>${s.name}: <code>${s.instruction}</code></div>`).join("");
-  $("task").textContent = meta.task;
+  $("task").textContent = meta.dataset_tasks.join(" / ");
   $("keys").innerHTML = ev + `<div style="margin-top:6px"><b>단계와 지시문</b></div>` + st + `
     <div><kbd>Space</kbd> 재생/정지</div>
     <div><kbd>←</kbd><kbd>→</kbd> 1프레임, <kbd>Shift</kbd>+화살표 10프레임</div>

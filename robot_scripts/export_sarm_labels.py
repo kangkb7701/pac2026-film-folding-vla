@@ -63,7 +63,11 @@ def main() -> None:
 
     root = Path(args.root)
     labels = json.loads(Path(args.labels or root / "human_labels.json").read_text(encoding="utf-8"))["episodes"]
-    fps = json.loads((root / "meta/info.json").read_text())["fps"]
+    info = json.loads((root / "meta/info.json").read_text())
+    fps = info["fps"]
+    cams = [k for k, v in info["features"].items() if v["dtype"] == "video"]
+    # SARM reads one camera; the top view worked best in the SARM paper (wrist cameras did not help).
+    image_key = next((k for k in cams if "top" in k), cams[0])
     train_outcomes = {"success", "misaligned"} if args.include_misaligned else {"success"}
 
     annotated, train = {}, []
@@ -104,7 +108,7 @@ def main() -> None:
     print("stage proportions (SARM progress share): " + ", ".join(f"{k} {v:.2f}" for k, v in props.items()))
     print(f"SARM training episodes ({len(train)}): {train}")
     print("\nSARM training flags:")
-    print("  --policy.type=sarm --policy.annotation_mode=dense_only --policy.image_key=observation.images.camera1")
+    print(f"  --policy.type=sarm --policy.annotation_mode=dense_only --policy.image_key={image_key}")
     print(f"  --dataset.episodes=\"{train}\"")
     print("Progress for RA-BC: compute_rabc_weights ... --head-mode dense")
 
