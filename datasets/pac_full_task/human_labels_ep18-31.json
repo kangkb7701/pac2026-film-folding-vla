@@ -1,0 +1,435 @@
+{
+ "episodes": {
+  "18": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 942
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1586
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1866
+    },
+    {
+     "type": "place",
+     "frame": 2188
+    },
+    {
+     "type": "pick_place",
+     "frame": 2461
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "19": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 969
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1037
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1305
+    },
+    {
+     "type": "place",
+     "frame": 1739
+    },
+    {
+     "type": "pick_place",
+     "frame": 2041
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "20": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 572
+    },
+    {
+     "type": "tear_off",
+     "frame": 649
+    },
+    {
+     "type": "lay_flat",
+     "frame": 776
+    },
+    {
+     "type": "fold_twice",
+     "frame": 944
+    },
+    {
+     "type": "place",
+     "frame": 1201
+    },
+    {
+     "type": "pick_place",
+     "frame": 1505
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "21": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 671
+    },
+    {
+     "type": "tear_off",
+     "frame": 813
+    },
+    {
+     "type": "lay_flat",
+     "frame": 981
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1275
+    },
+    {
+     "type": "place",
+     "frame": 1593
+    },
+    {
+     "type": "pick_place",
+     "frame": 1842
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "22": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 857
+    },
+    {
+     "type": "lay_flat",
+     "frame": 957
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1257
+    },
+    {
+     "type": "place",
+     "frame": 1814
+    },
+    {
+     "type": "pick_place",
+     "frame": 2022
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "23": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 1168
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1506
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1953
+    },
+    {
+     "type": "place",
+     "frame": 3007
+    },
+    {
+     "type": "pick_place",
+     "frame": 3490
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "24": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 663
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1217
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1538
+    },
+    {
+     "type": "place",
+     "frame": 2010
+    },
+    {
+     "type": "pick_place",
+     "frame": 2223
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "25": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 674
+    },
+    {
+     "type": "lay_flat",
+     "frame": 993
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1146
+    },
+    {
+     "type": "place",
+     "frame": 1320
+    },
+    {
+     "type": "pick_place",
+     "frame": 1526
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "26": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 556
+    },
+    {
+     "type": "lay_flat",
+     "frame": 830
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1539
+    },
+    {
+     "type": "place",
+     "frame": 1752
+    },
+    {
+     "type": "pick_place",
+     "frame": 1947
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "27": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 641
+    },
+    {
+     "type": "lay_flat",
+     "frame": 791
+    },
+    {
+     "type": "fold_twice",
+     "frame": 986
+    },
+    {
+     "type": "place",
+     "frame": 1283
+    },
+    {
+     "type": "pick_place",
+     "frame": 1451
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "28": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 1186
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1830
+    },
+    {
+     "type": "fold_twice",
+     "frame": 2027
+    },
+    {
+     "type": "place",
+     "frame": 2256
+    },
+    {
+     "type": "pick_place",
+     "frame": 2628
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "29": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 1487
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1776
+    },
+    {
+     "type": "fold_twice",
+     "frame": 2212
+    },
+    {
+     "type": "place",
+     "frame": 2504
+    },
+    {
+     "type": "pick_place",
+     "frame": 2756
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "30": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 606
+    },
+    {
+     "type": "lay_flat",
+     "frame": 979
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1090
+    },
+    {
+     "type": "place",
+     "frame": 1281
+    },
+    {
+     "type": "pick_place",
+     "frame": 1572
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "31": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 675
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1006
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1298
+    },
+    {
+     "type": "place",
+     "frame": 1571
+    },
+    {
+     "type": "pick_place",
+     "frame": 1769
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  }
+ },
+ "dataset": "C:\\Users\\user\\Desktop\\pac_full_task (2)\\pac_full_task",
+ "fps": 30,
+ "events": [
+  "pull_out",
+  "tear_off",
+  "lay_flat",
+  "fold_twice",
+  "place",
+  "pick_place",
+  "done"
+ ]
+}
