@@ -19,7 +19,8 @@ import uvicorn
 from fastapi import Body, FastAPI, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
 
-# Competition task: tear one plastic bag off the roll, fold it in half twice, place it on the target.
+# Competition task: tear one plastic bag off the roll, lay it flat, fold it in half twice, move it onto
+# the A4 paper, then pick it up and put it into the target.
 # Each key marks "from here on, this subtask" (stage `starts`; len(STAGES) = done).
 # The episode starts in the first subtask (pulling) even without a mark, and the last marked
 # subtask runs to the episode end unless "완료" is marked; see export_sarm_labels.py.
@@ -29,8 +30,9 @@ EVENTS = [
     {"key": "tear_off", "hotkey": "2", "starts": 1, "name": "뜯기", "desc": "여기서부터 절취선 잡고 뜯기"},
     {"key": "lay_flat", "hotkey": "3", "starts": 2, "name": "펴 놓기", "desc": "여기서부터 뜯은 비닐을 가운데에 펴 놓기"},
     {"key": "fold_twice", "hotkey": "4", "starts": 3, "name": "접기", "desc": "여기서부터 두 번 접기"},
-    {"key": "place", "hotkey": "5", "starts": 4, "name": "옮겨 놓기", "desc": "여기서부터 목표 위치로 옮겨 놓기"},
-    {"key": "done", "hotkey": "6", "starts": 5, "name": "완료", "desc": "작업이 끝난 순간 (안 찍으면 에피소드 끝이 완료)"},
+    {"key": "place", "hotkey": "5", "starts": 4, "name": "옮겨 놓기", "desc": "여기서부터 접은 비닐을 A4 용지 위로 옮겨 놓기"},
+    {"key": "pick_place", "hotkey": "6", "starts": 5, "name": "집어 넣기", "desc": "여기서부터 A4 용지 위의 비닐을 집어 목표에 넣기"},
+    {"key": "done", "hotkey": "7", "starts": 6, "name": "완료", "desc": "작업이 끝난 순간 (안 찍으면 에피소드 끝이 완료)"},
 ]
 # "instruction" is the per-stage task string for the policy.
 STAGES = [
@@ -38,7 +40,8 @@ STAGES = [
     {"key": "tear_off", "name": "뜯기", "instruction": "Tear off the plastic bag."},
     {"key": "lay_flat", "name": "펴 놓기", "instruction": "Lay the plastic bag flat."},
     {"key": "fold_twice", "name": "접기", "instruction": "Fold the plastic bag twice."},
-    {"key": "place", "name": "옮겨 놓기", "instruction": "Place the plastic bag on the target."},
+    {"key": "place", "name": "옮겨 놓기", "instruction": "Place the plastic bag on the paper."},
+    {"key": "pick_place", "name": "집어 넣기", "instruction": "Pick up the plastic bag and put it into the target."},
 ]
 OUTCOMES = {
     "success": "성공",
