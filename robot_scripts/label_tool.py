@@ -23,7 +23,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 # Each key marks "from here on, this subtask" (stage `starts`; len(STAGES) = done).
 # The episode starts in the first subtask (pulling) even without a mark, and the last marked
 # subtask runs to the episode end unless "완료" is marked; see export_sarm_labels.py.
-# Going back (e.g. pulling again after a slip) is just marking that subtask again.
+# The page keeps one mark per subtask per episode (pressing a key again moves that mark).
 EVENTS = [
     {"key": "pull_out", "hotkey": "1", "starts": 0, "name": "끌어오기", "desc": "여기서부터 비닐 끌어오기 (에피소드 시작은 자동으로 끌어오기)"},
     {"key": "tear_off", "hotkey": "2", "starts": 1, "name": "뜯기", "desc": "여기서부터 절취선 잡고 뜯기"},
