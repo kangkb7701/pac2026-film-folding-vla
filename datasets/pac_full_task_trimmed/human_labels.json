@@ -1,0 +1,510 @@
+{
+ "episodes": {
+  "0": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 816
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1026
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1402
+    },
+    {
+     "type": "place",
+     "frame": 1812
+    },
+    {
+     "type": "done",
+     "frame": 2126
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "1": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 773
+    },
+    {
+     "type": "lay_flat",
+     "frame": 888
+    },
+    {
+     "type": "fold_twice",
+     "frame": 973
+    },
+    {
+     "type": "place",
+     "frame": 1311
+    },
+    {
+     "type": "done",
+     "frame": 1627
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "2": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 511
+    },
+    {
+     "type": "lay_flat",
+     "frame": 765
+    },
+    {
+     "type": "fold_twice",
+     "frame": 891
+    },
+    {
+     "type": "place",
+     "frame": 1156
+    },
+    {
+     "type": "done",
+     "frame": 1411
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "3": {
+   "events": [
+    {
+     "type": "tear_off",
+     "frame": 676
+    },
+    {
+     "type": "lay_flat",
+     "frame": 942
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1087
+    },
+    {
+     "type": "place",
+     "frame": 1481
+    },
+    {
+     "type": "done",
+     "frame": 1736
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "4": {
+   "events": [
+    {
+     "type": "tear_off",
+     "frame": 747
+    },
+    {
+     "type": "lay_flat",
+     "frame": 821
+    },
+    {
+     "type": "fold_twice",
+     "frame": 888
+    },
+    {
+     "type": "place",
+     "frame": 1232
+    },
+    {
+     "type": "done",
+     "frame": 1486
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "5": {
+   "events": [
+    {
+     "type": "tear_off",
+     "frame": 477
+    },
+    {
+     "type": "lay_flat",
+     "frame": 754
+    },
+    {
+     "type": "fold_twice",
+     "frame": 885
+    },
+    {
+     "type": "place",
+     "frame": 1239
+    },
+    {
+     "type": "done",
+     "frame": 1481
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "6": {
+   "events": [
+    {
+     "type": "tear_off",
+     "frame": 610
+    },
+    {
+     "type": "lay_flat",
+     "frame": 676
+    },
+    {
+     "type": "fold_twice",
+     "frame": 956
+    },
+    {
+     "type": "place",
+     "frame": 1242
+    },
+    {
+     "type": "done",
+     "frame": 1464
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "7": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 714
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1070
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1140
+    },
+    {
+     "type": "place",
+     "frame": 1370
+    },
+    {
+     "type": "done",
+     "frame": 1655
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "8": {
+   "events": [
+    {
+     "type": "tear_off",
+     "frame": 965
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1072
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1427
+    },
+    {
+     "type": "place",
+     "frame": 2065
+    },
+    {
+     "type": "done",
+     "frame": 2296
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "9": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 593
+    },
+    {
+     "type": "lay_flat",
+     "frame": 762
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1086
+    },
+    {
+     "type": "place",
+     "frame": 1766
+    },
+    {
+     "type": "done",
+     "frame": 1997
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "10": {
+   "events": [
+    {
+     "type": "tear_off",
+     "frame": 570
+    },
+    {
+     "type": "lay_flat",
+     "frame": 649
+    },
+    {
+     "type": "fold_twice",
+     "frame": 740
+    },
+    {
+     "type": "place",
+     "frame": 1312
+    },
+    {
+     "type": "done",
+     "frame": 1526
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "11": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 833
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "12": {
+   "events": [
+    {
+     "type": "tear_off",
+     "frame": 731
+    },
+    {
+     "type": "lay_flat",
+     "frame": 809
+    },
+    {
+     "type": "fold_twice",
+     "frame": 970
+    },
+    {
+     "type": "place",
+     "frame": 1478
+    },
+    {
+     "type": "done",
+     "frame": 1726
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "13": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 803
+    },
+    {
+     "type": "lay_flat",
+     "frame": 974
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1613
+    },
+    {
+     "type": "place",
+     "frame": 1822
+    },
+    {
+     "type": "done",
+     "frame": 2042
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "14": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 524
+    },
+    {
+     "type": "lay_flat",
+     "frame": 639
+    },
+    {
+     "type": "fold_twice",
+     "frame": 964
+    },
+    {
+     "type": "place",
+     "frame": 1233
+    },
+    {
+     "type": "done",
+     "frame": 1440
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "15": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 824
+    },
+    {
+     "type": "lay_flat",
+     "frame": 947
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1665
+    },
+    {
+     "type": "place",
+     "frame": 1983
+    },
+    {
+     "type": "done",
+     "frame": 2176
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "16": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 1035
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1215
+    },
+    {
+     "type": "fold_twice",
+     "frame": 2029
+    },
+    {
+     "type": "place",
+     "frame": 2362
+    },
+    {
+     "type": "done",
+     "frame": 2627
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "17": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 546
+    },
+    {
+     "type": "lay_flat",
+     "frame": 909
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1215
+    },
+    {
+     "type": "place",
+     "frame": 1691
+    },
+    {
+     "type": "done",
+     "frame": 1939
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  }
+ },
+ "dataset": "C:\\Users\\kangk\\Desktop\\pac_full_task_trimmed",
+ "fps": 30,
+ "events": [
+  "pull_out",
+  "tear_off",
+  "lay_flat",
+  "fold_twice",
+  "place",
+  "done"
+ ]
+}
