@@ -4,7 +4,7 @@
 Owns everything at the robot side so the WAN link is never inside a control
 loop and never between the stop button and the motors:
 
-  - SO-101 bus + two cameras via lerobot (local, 10Hz)
+  - two SO-101 arms (bi_so_follower) + three cameras via lerobot (local, 10Hz)
   - the app backend the Flutter app talks to (commands + /video_feed, one port)
   - a websocket client that streams observations OUT to the ACT policy server
     and replays the returned action chunks locally
@@ -48,14 +48,17 @@ from lerobot.cameras.opencv.configuration_opencv import OpenCVCameraConfig
 from lerobot.common.control_utils import teleop_smooth_move_to
 from lerobot.datasets import LeRobotDataset
 from lerobot.robots import make_robot_from_config
-from lerobot.robots.so_follower.config_so_follower import SOFollowerRobotConfig
+from lerobot.robots.bi_so_follower.config_bi_so_follower import BiSOFollowerConfig
+from lerobot.robots.so_follower.config_so_follower import SOFollowerConfig
 from lerobot.teleoperators import make_teleoperator_from_config
-from lerobot.teleoperators.so_leader.config_so_leader import SOLeaderTeleopConfig
+from lerobot.teleoperators.bi_so_leader.config_bi_so_leader import BiSOLeaderConfig
+from lerobot.teleoperators.so_leader.config_so_leader import SOLeaderConfig
 from lerobot.utils.constants import ACTION, OBS_STR
 from lerobot.utils.feature_utils import build_dataset_frame, hw_to_dataset_features
 from lerobot.utils.robot_utils import precise_sleep
 
-JOINT_NAMES = (
+ARM_SIDES = ("left", "right")
+ARM_JOINTS = (
     "shoulder_pan",
     "shoulder_lift",
     "elbow_flex",
@@ -63,15 +66,24 @@ JOINT_NAMES = (
     "wrist_roll",
     "gripper",
 )
-# PAC 2026: mean first-frame state of the fold_film_onearm_demo episodes (rest pose, gripper closed).
-HOME_POSITION_DEG = np.asarray([1.6, -99.5, 90.7, 73.7, 17.6, 1.9], dtype=np.float32)
+# bi_so_follower order, as in the pac_full_task dataset: left arm then right arm.
+JOINT_NAMES = tuple(f"{side}_{joint}" for side in ARM_SIDES for joint in ARM_JOINTS)
+GRIPPER_IDX = [JOINT_NAMES.index(f"{side}_gripper") for side in ARM_SIDES]
+# PAC 2026: mean first-frame state of the pac_full_task episodes (rest pose, grippers closed).
+HOME_POSITION_DEG = np.asarray(
+    [-8.4, -99.7, 97.5, 66.9, 13.4, 2.9, 5.4, -99.5, 92.4, 70.9, 23.3, 5.1], dtype=np.float32
+)
 HOME_MOVE_DURATION_S = 2.5
 HOME_MOVE_HZ = 30
 CAMERA_PRIME_TIMEOUT_MS = 2000  # first frame after connect; the sensor is still settling
 # PAC 2026: must match the dataset task string exactly (SmolVLA reads it as language input).
-ACT_ALLOWED_TASKS = ("Fold the plastic film in half.",)
-# PAC 2026: dataset camera keys, in SmolVLA's pretraining order (top=1, wrist=2).
-POLICY_CAMERA_KEYS = {"top": "camera1", "wrist": "camera2"}
+ACT_ALLOWED_TASKS = (
+    "Pull out, tear off, lay flat, fold twice, and place the plastic bag on the paper, "
+    "then pick it up and put it into the target.",
+)
+# PAC 2026: cameras of the pac_full_task dataset; the dataset keys are the camera names.
+CAMERA_NAMES = ("top", "left_wrist", "right_wrist")
+POLICY_CAMERA_KEYS = {name: name for name in CAMERA_NAMES}
 # Intervention mode: space/tab as in lerobot-rollout --strategy.type=dagger, plus start and attempt labels.
 HIL_KEYS = {
     "enter": "start",
@@ -91,8 +103,8 @@ JOINT_LIMITS = {
     "wrist_roll": (-180.0, 180.0),
     "gripper": (0.0, 100.0),
 }
-LIMIT_LOW = np.asarray([JOINT_LIMITS[n][0] for n in JOINT_NAMES], dtype=np.float32)
-LIMIT_HIGH = np.asarray([JOINT_LIMITS[n][1] for n in JOINT_NAMES], dtype=np.float32)
+LIMIT_LOW = np.asarray([JOINT_LIMITS[j][0] for _ in ARM_SIDES for j in ARM_JOINTS], dtype=np.float32)
+LIMIT_HIGH = np.asarray([JOINT_LIMITS[j][1] for _ in ARM_SIDES for j in ARM_JOINTS], dtype=np.float32)
 
 
 # ---------------------------------------------------------------- cameras
@@ -128,23 +140,24 @@ def identify_cameras(args) -> None:
         preview.write_bytes(encoded.tobytes())
         found.append(index)
         print(f"  index {index}: preview saved -> {preview}")
-    if len(found) < 2:
-        raise SystemExit(f"need at least 2 cameras, found indices {found}")
-    top = int(input(f"top camera index {found}: ").strip())
-    wrist = int(input(f"wrist camera index {found}: ").strip())
-    if top == wrist or top not in found or wrist not in found:
+    if len(found) < len(CAMERA_NAMES):
+        raise SystemExit(f"need at least {len(CAMERA_NAMES)} cameras, found indices {found}")
+    mapping = {name: int(input(f"{name} camera index {found}: ").strip()) for name in CAMERA_NAMES}
+    if len(set(mapping.values())) < len(CAMERA_NAMES) or not set(mapping.values()) <= set(found):
         raise SystemExit("invalid selection")
     path = camera_config_path(args)
-    path.write_text(json.dumps({"top": top, "wrist": wrist}, indent=2))
+    path.write_text(json.dumps(mapping, indent=2))
     print(f"saved: {path}")
 
 
 def load_camera_mapping(args) -> dict:
     path = camera_config_path(args)
-    if not path.exists():
-        raise SystemExit(f"{path} not found - run with --identify first (indices shuffle on every reconnect)")
-    mapping = json.loads(path.read_text())
-    return {"top": int(mapping["top"]), "wrist": int(mapping["wrist"])}
+    mapping = json.loads(path.read_text()) if path.exists() else {}
+    if not all(name in mapping for name in CAMERA_NAMES):
+        raise SystemExit(
+            f"{path} has no {'/'.join(CAMERA_NAMES)} mapping - run with --identify first (indices shuffle on every reconnect)"
+        )
+    return {name: int(mapping[name]) for name in CAMERA_NAMES}
 
 
 def start_key_listener(push) -> None:
@@ -272,14 +285,15 @@ class EdgeAgent:
         self.args = args
         self.store = CommandStore()
         mapping = load_camera_mapping(args)
-        print(f"cameras: top=idx{mapping['top']} wrist=idx{mapping['wrist']} (from {camera_config_path(args)})")
+        print(f"cameras: {' '.join(f'{n}=idx{i}' for n, i in mapping.items())} (from {camera_config_path(args)})")
         self.robot = make_robot_from_config(
-            SOFollowerRobotConfig(
+            BiSOFollowerConfig(
+                # Arm calibration ids are "<id>_left" / "<id>_right" (bimanual_follower_left.json, ...).
                 id=args.robot_id,
-                port=args.robot_port,
+                left_arm_config=SOFollowerConfig(port=args.robot_port_left, disable_torque_on_disconnect=True, use_degrees=True),
+                right_arm_config=SOFollowerConfig(port=args.robot_port_right, disable_torque_on_disconnect=True, use_degrees=True),
                 calibration_dir=Path(args.calibration_dir) if args.calibration_dir else None,
-                disable_torque_on_disconnect=True,
-                use_degrees=True,
+                # Top-level cameras keep their names (no left_/right_ prefix), matching the dataset keys.
                 cameras={
                     # Same settings the dataset was recorded with; without MJPG the second
                     # camera on the shared hub fails to open (YUY2 exceeds the USB bandwidth).
@@ -290,8 +304,10 @@ class EdgeAgent:
                 },
             )
         )
+        # Each arm's own motor bus is driven directly (both in JOINT_NAMES order, left then right).
+        self.arms = {"left": self.robot.left_arm, "right": self.robot.right_arm}
         self._lock = threading.Lock()
-        self._chunk = None            # np (n_steps, 6) in JOINT_NAMES order
+        self._chunk = None            # np (n_steps, 12) in JOINT_NAMES order
         self._chunk_t0 = 0.0          # laptop monotonic time of the source observation
         self._chunk_fps = 10
         self._chunk_arrival = 0.0
@@ -313,11 +329,18 @@ class EdgeAgent:
         self.client = PolicyClient(
             args.server_url, self._handle_chunk, lambda msg: print(f"[link] {msg}"), max_inflight=args.max_inflight
         )
-        # Intervention mode (leader arm attached): pause the policy, take over with the leader, hand back.
+        # Intervention mode (both leader arms attached): pause the policy, take over with the leaders, hand back.
         self.teleop = None
-        if args.teleop_port:
+        if args.teleop_port_left or args.teleop_port_right:
+            if not (args.teleop_port_left and args.teleop_port_right):
+                raise SystemExit("intervention mode needs both --teleop_port_left and --teleop_port_right")
             self.teleop = make_teleoperator_from_config(
-                SOLeaderTeleopConfig(id=args.teleop_id, port=args.teleop_port, use_degrees=True)
+                BiSOLeaderConfig(
+                    # Arm calibration ids are "<id>_left" / "<id>_right" (bimanual_leader_left.json, ...).
+                    id=args.teleop_id,
+                    left_arm_config=SOLeaderConfig(port=args.teleop_port_left, use_degrees=True),
+                    right_arm_config=SOLeaderConfig(port=args.teleop_port_right, use_degrees=True),
+                )
             )
         self.events: queue.Queue = queue.Queue()  # intervention keys (keyboard or POST /command/key)
         self.dataset = None
@@ -331,17 +354,27 @@ class EdgeAgent:
     def connect(self) -> None:
         if self.teleop is not None:
             self.teleop.connect()  # before the robot, like lerobot-record
-            print(f"leader arm connected on {self.args.teleop_port} (intervention mode)")
-        self.robot.bus.connect()
-        if not self.robot.bus.is_calibrated:
-            raise SystemExit("motor calibration mismatch - check --calibration_dir / --robot_id")
+            print(
+                f"leader arms connected on {self.args.teleop_port_left} (left), "
+                f"{self.args.teleop_port_right} (right) (intervention mode)"
+            )
+        for side, arm in self.arms.items():
+            arm.bus.connect()
+            if not arm.bus.is_calibrated:
+                raise SystemExit(
+                    f"{side} arm: motor calibration mismatch - check --calibration_dir / --robot_id "
+                    f"({arm.id}) and that the {side} follower is on {arm.config.port}"
+                )
         for cam in self.robot.cameras.values():
             cam.connect()
         # Prime the reuse buffer patiently: read_frames() falls back to the last
         # good frame, so every camera needs one before any loop starts.
         for name, cam in self.robot.cameras.items():
             self._last_frames[name] = cam.async_read(timeout_ms=CAMERA_PRIME_TIMEOUT_MS)
-        print(f"bus connected on {self.args.robot_port}; cameras up; dry_run={self.args.dry_run}")
+        print(
+            f"buses connected on {self.args.robot_port_left} (left), {self.args.robot_port_right} (right); "
+            f"cameras up; dry_run={self.args.dry_run}"
+        )
 
     def read_frames(self) -> dict | None:
         """Latest frame per camera, tolerating dropped reads.
@@ -371,23 +404,28 @@ class EdgeAgent:
         return None if self._drop_streak > self.args.camera_drop_limit else frames
 
     def read_joints(self) -> np.ndarray:
-        positions = self.robot.bus.sync_read("Present_Position")
-        return np.asarray([positions[name] for name in JOINT_NAMES], dtype=np.float32)
+        positions = []
+        for arm in self.arms.values():
+            values = arm.bus.sync_read("Present_Position")
+            positions += [values[joint] for joint in ARM_JOINTS]
+        return np.asarray(positions, dtype=np.float32)
 
     def write_joints(self, target: np.ndarray) -> None:
         if self.args.dry_run:
             return
-        self.robot.bus.sync_write("Goal_Position", {name: float(target[i]) for i, name in enumerate(JOINT_NAMES)})
+        n = len(ARM_JOINTS)
+        for k, arm in enumerate(self.arms.values()):
+            arm.bus.sync_write("Goal_Position", {joint: float(target[k * n + i]) for i, joint in enumerate(ARM_JOINTS)})
 
     def clamp(self, target: np.ndarray, reference: np.ndarray) -> np.ndarray:
         step = np.asarray(
-            [self.args.max_step_deg] * 5 + [self.args.max_step_gripper], dtype=np.float32
+            ([self.args.max_step_deg] * 5 + [self.args.max_step_gripper]) * len(ARM_SIDES), dtype=np.float32
         )
         clamped = np.clip(target, reference - step, reference + step)
         return np.clip(clamped, LIMIT_LOW, LIMIT_HIGH)
 
     def preset_gripper(self, target: float) -> None:
-        """Ramp only the gripper to the training-data start state.
+        """Ramp only the grippers to the training-data start state.
 
         The home pose parks the gripper closed (2.3), but every training episode
         starts with it open (~40, the pipeline's canonical open position - see
@@ -396,12 +434,12 @@ class EdgeAgent:
         episode precondition is restored explicitly instead of changing home.
         """
         current = self.read_joints()
-        if abs(float(current[5]) - target) < 2.0:
+        if np.all(np.abs(current[GRIPPER_IDX] - target) < 2.0):
             return
         goal = current.copy()
         steps = max(1, round(0.8 * HOME_MOVE_HZ))
         for step in range(1, steps + 1):
-            goal[5] = current[5] + (step / steps) * (target - current[5])
+            goal[GRIPPER_IDX] = current[GRIPPER_IDX] + (step / steps) * (target - current[GRIPPER_IDX])
             self.write_joints(goal)
             precise_sleep(1.0 / HOME_MOVE_HZ)
         print(f"gripper preset to {target:.0f} (training start state)")
@@ -453,7 +491,7 @@ class EdgeAgent:
     # ---- recording ----
 
     def open_dataset(self) -> None:
-        """Same features as the teleop demos (camera1/camera2, joint names, fps), so the datasets merge as is.
+        """Same features as the pac_full_task demos (top/left_wrist/right_wrist, 12 joint names, fps), so the datasets merge as is.
         Who drove each frame and the attempt outcome go to hil_labels.json, not into the dataset."""
         args = self.args
         joints = {f"{n}.pos": float for n in JOINT_NAMES}
@@ -663,7 +701,7 @@ class EdgeAgent:
     # ---- app video ----
 
     def publish_app_frame(self, frames: dict) -> None:
-        ordered = [frames[n] for n in ("top", "wrist") if n in frames]
+        ordered = [frames[n] for n in CAMERA_NAMES if n in frames]
         if not ordered:
             return
         combined = np.hstack(ordered) if len(ordered) > 1 else ordered[0]
@@ -695,7 +733,8 @@ class EdgeAgent:
                 self.robot.configure()
                 self._configured = True
                 print("servo gains configured (P=16, matching main_act)")
-            self.robot.bus.enable_torque()
+            for arm in self.arms.values():
+                arm.bus.enable_torque()
             if args.episode_start_gripper >= 0.0:
                 self.preset_gripper(args.episode_start_gripper)
         last_sent = self.read_joints()
@@ -844,7 +883,8 @@ class EdgeAgent:
                             return None
 
             if args.auto_stop_on_release and phase == "auto":
-                gripper_pos = float(joints[5])
+                # Grasp = either gripper closed; release = both reopened.
+                gripper_pos = float(joints[GRIPPER_IDX].min())
                 if not grasped:
                     if gripper_pos <= args.grasp_close_below:
                         grasp_since = grasp_since or now
@@ -883,7 +923,8 @@ class EdgeAgent:
                     f"[edge {tick:04d}] {phase} {rec}hz={hz:4.1f} late={late} max={busy_max * 1e3:.0f}ms "
                     f"chunk_age={age:5.2f}s steps={chunks_used} holds={holds} "
                     f"clamps={clamp_hits} drops={self._drops_total} ens={ensemble_n} "
-                    f"grip={last_sent[5]:3.0f}/{joints[5]:3.0f} infer={infer:.0f}ms "
+                    f"grip=L{last_sent[GRIPPER_IDX[0]]:3.0f}/{joints[GRIPPER_IDX[0]]:3.0f} "
+                    f"R{last_sent[GRIPPER_IDX[1]]:3.0f}/{joints[GRIPPER_IDX[1]]:3.0f} infer={infer:.0f}ms "
                     f"zv={self._zero_metrics[0]:.1f}/{self._zero_metrics[1]:.1f} "
                     f"{self._zero_count}/{args.zero_velocity_consecutive_steps} "
                     f"st={self._stable_metrics[0]:.1f}/{self._stable_metrics[1]:.1f} "
@@ -988,15 +1029,18 @@ class EdgeAgent:
                 self.release_leader()
                 self.teleop.disconnect()
             self.client.stop()
-            if not args.dry_run and self.robot.bus.is_connected:
+            buses_up = all(arm.bus.is_connected for arm in self.arms.values())
+            if not args.dry_run and buses_up:
                 self.move_home("shutdown")
-                try:
-                    self.robot.bus.disable_torque()
-                    print("torque disabled")
-                except Exception as exc:  # noqa: BLE001
-                    print(f"WARNING: failed to disable torque: {exc}")
-            if self.robot.bus.is_connected:
-                self.robot.bus.disconnect()
+            for side, arm in self.arms.items():
+                if not args.dry_run and arm.bus.is_connected:
+                    try:
+                        arm.bus.disable_torque()
+                        print(f"{side} arm torque disabled")
+                    except Exception as exc:  # noqa: BLE001
+                        print(f"WARNING: failed to disable {side} arm torque: {exc}")
+                if arm.bus.is_connected:
+                    arm.bus.disconnect()
             for cam in self.robot.cameras.values():
                 try:
                     cam.disconnect()
@@ -1013,13 +1057,15 @@ def main() -> None:
     parser.add_argument("--camera_config", default=os.getenv("EDGE_CAMERA_CONFIG"))
     parser.add_argument("--server_url", default=os.getenv("ACT_SERVER_URL", "ws://127.0.0.1:8765"))
     parser.add_argument("--token", default=os.getenv("POLICY_TOKEN"), help="Shared secret the policy server checks on every request.")
-    parser.add_argument("--teleop_port", default=None, help="Leader arm port (e.g. COM5). Enables intervention mode.")
-    parser.add_argument("--teleop_id", default="bimanual_leader_right", help="Leader calibration id.")
+    parser.add_argument("--teleop_port_left", default=os.getenv("TELEOP_PORT_LEFT"), help="Left leader arm port. Both leader ports enable intervention mode.")
+    parser.add_argument("--teleop_port_right", default=os.getenv("TELEOP_PORT_RIGHT"), help="Right leader arm port (e.g. COM5).")
+    parser.add_argument("--teleop_id", default="bimanual_leader", help="Leader calibration id; the arms use <id>_left / <id>_right.")
     parser.add_argument("--record_root", default=None, help="Record every attempt (policy + human frames) into this LeRobot dataset folder; resumes if it exists.")
-    parser.add_argument("--record_repo_id", default="kangk/fold_film_onearm_hil")
+    parser.add_argument("--record_repo_id", default="kangk/pac_full_task_hil")
     parser.add_argument("--video_encoding_batch_size", type=int, default=1, help="1 = encode each attempt while the arm is back home. LeRobot 0.6.1 fails to finalize a partially filled batch (>1), so keep 1.")
-    parser.add_argument("--robot_port", default=os.getenv("ROBOT_PORT", "COM3"))
-    parser.add_argument("--robot_id", default=os.getenv("ROBOT_ID", "my_follower"))
+    parser.add_argument("--robot_port_left", default=os.getenv("ROBOT_PORT_LEFT"), help="Left follower arm port.")
+    parser.add_argument("--robot_port_right", default=os.getenv("ROBOT_PORT_RIGHT", "COM3"), help="Right follower arm port.")
+    parser.add_argument("--robot_id", default=os.getenv("ROBOT_ID", "bimanual_follower"), help="Follower calibration id; the arms use <id>_left / <id>_right.")
     parser.add_argument("--calibration_dir", default=os.getenv("LEROBOT_CALIBRATION_DIR"))
     parser.add_argument("--app_host", default="0.0.0.0")
     parser.add_argument("--app_port", type=int, default=8000)
@@ -1038,7 +1084,7 @@ def main() -> None:
     parser.add_argument("--ensemble_coeff", type=float, default=0.01, help="Ensemble rank-decay coefficient w_i=exp(-coeff*i) with rank 0 = oldest. Default matches the checkpoint's own temporal_ensemble_coeff (oldest-heavy, smoother); negative favors NEWER chunks (more reactive).")
     parser.add_argument("--chunk_size_threshold", type=float, default=0.5, help="Send a new observation only when the unexecuted steps of the current plan are <= this fraction of a chunk. 0.5 = LeRobot async default; 1 = send continuously.")
     parser.add_argument("--blend_old_weight", type=float, default=0.3, help="Weight of the current plan where a new chunk overlaps it: w*old + (1-w)*new. 0.3 = LeRobot async default (weighted_average); 0 = newest chunk only (latest_only).")
-    parser.add_argument("--max_step_deg", type=float, default=6.0, help="Per-tick clamp for the five arm joints.")
+    parser.add_argument("--max_step_deg", type=float, default=6.0, help="Per-tick clamp for the five arm joints of each arm.")
     parser.add_argument("--max_step_gripper", type=float, default=25.0)
     parser.add_argument("--auto_stop_horizon", type=int, default=30)
     parser.add_argument("--auto_stop_on_release", action=argparse.BooleanOptionalAction, default=True, help="Stop when the measured gripper completes a grasp->release cycle (task success for pick-and-place).")
@@ -1061,6 +1107,8 @@ def main() -> None:
     if args.identify:
         identify_cameras(args)
         return
+    if not args.robot_port_left:
+        parser.error("--robot_port_left is required (or set ROBOT_PORT_LEFT)")
     EdgeAgent(args).run()
 
 
