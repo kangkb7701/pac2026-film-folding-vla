@@ -20,8 +20,6 @@ from fastapi import Body, FastAPI, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
 
 # Competition task: tear one plastic bag off the roll, fold it in half twice, place it on the target.
-# The overall task string must match the recordings exactly.
-TASK = "Tear off, fold, and place the plastic bag."
 # Moments to mark (in order). Each stage runs from one marked moment to the next; see export_sarm_labels.py.
 EVENTS = [
     {"key": "start", "name": "시작", "desc": "팔이 비닐을 향해 움직이기 시작 (끌어오기 시작)"},
@@ -51,6 +49,7 @@ PORT = 8010
 def load_meta(root: Path) -> dict:
     info = json.loads((root / "meta/info.json").read_text())
     cams = [k for k, v in info["features"].items() if v["dtype"] == "video"]
+    cams.sort(key=lambda k: "top" not in k)  # top view first: stage boundaries are judged from it (SARM paper)
     episodes = pd.concat(pd.read_parquet(f) for f in sorted((root / "meta/episodes").rglob("*.parquet")))
     eps = []
     for _, row in episodes.sort_values("episode_index").iterrows():
@@ -66,7 +65,8 @@ def load_meta(root: Path) -> dict:
         eps.append({"index": int(row["episode_index"]), "length": int(row["length"]), "videos": videos})
     hil_path = root / "hil_labels.json"
     hil = {str(e["episode_index"]): e for e in json.loads(hil_path.read_text())} if hil_path.exists() else {}
-    return {"fps": info["fps"], "cameras": cams, "episodes": eps, "hil": hil}
+    tasks = pd.read_parquet(root / "meta/tasks.parquet").index.tolist()
+    return {"fps": info["fps"], "cameras": cams, "episodes": eps, "hil": hil, "dataset_tasks": tasks}
 
 
 def make_app(root: Path) -> FastAPI:
@@ -87,7 +87,6 @@ def make_app(root: Path) -> FastAPI:
     def api_meta():
         return {
             **meta,
-            "task": TASK,
             "events": EVENTS,
             "stages": STAGES,
             "outcomes": OUTCOMES,
