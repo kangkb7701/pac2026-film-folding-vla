@@ -16,3 +16,18 @@ mkdir -p /content/data && unzip -q /content/pac_full_task_hil.zip -d /content/da
 두 sha256 값이 같아야 합니다. 풀면 `/content/data/pac_full_task_hil`이 생깁니다.
 
 Windows에서는 `copy /b pac_full_task_hil.zip.part00+pac_full_task_hil.zip.part01+... pac_full_task_hil.zip` 또는 Git Bash의 `cat`을 씁니다.
+
+## 추가분: 에피소드 14~22 (`pac_full_task_hil_ep14-22.zip`, 조각 5개)
+
+위 zip(에피소드 0~13) 다음에 녹화한 에피소드 14~22만 담았습니다. 메타데이터(`meta/`)와 `hil_labels.json`은 23개 에피소드 전체 기준으로 새로 들어 있습니다.
+
+- 합계: 23개 에피소드(0~22), 41,632프레임
+- 에피소드 18은 실패(`success: false`)로 바꿨습니다. 원래 22번 시도는 지웠고, 그 뒤 시도가 22번이 됐습니다(파일 이름은 `file-023`).
+
+첫 zip을 푼 뒤 옛 `meta/`와 `hil_labels.json`을 지우고 이 zip을 덮어 풉니다. 옛 `meta/episodes` 파일이 남아 있으면 에피소드 정보가 겹쳐서 데이터셋이 깨집니다.
+
+```
+cd datasets/pac_full_task_hil/zip && cat pac_full_task_hil_ep14-22.zip.part* > /content/pac_full_task_hil_ep14-22.zip && sha256sum /content/pac_full_task_hil_ep14-22.zip && cat pac_full_task_hil_ep14-22.zip.sha256
+rm -rf /content/data/pac_full_task_hil/meta /content/data/pac_full_task_hil/hil_labels.json
+unzip -q -o /content/pac_full_task_hil_ep14-22.zip -d /content/data
+```
