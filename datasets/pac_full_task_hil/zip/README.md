@@ -31,3 +31,15 @@ cd datasets/pac_full_task_hil/zip && cat pac_full_task_hil_ep14-22.zip.part* > /
 rm -rf /content/data/pac_full_task_hil/meta /content/data/pac_full_task_hil/hil_labels.json
 unzip -q -o /content/pac_full_task_hil_ep14-22.zip -d /content/data
 ```
+
+## 추가분: 에피소드 23~29 (`pac_full_task_hil_ep23-29.zip`, 조각 4개)
+
+에피소드 23~29(파일 이름 `file-024`~`file-030`)와 30개 에피소드 전체 기준 `meta/`, `hil_labels.json`을 담았습니다. 합계 30개 에피소드, 55,347프레임입니다.
+
+0~13번 zip과 14~22번 추가분을 푼 다음, 옛 `meta/`와 `hil_labels.json`을 지우고 이 zip을 덮어 풉니다.
+
+```
+cd datasets/pac_full_task_hil/zip && cat pac_full_task_hil_ep23-29.zip.part* > /content/pac_full_task_hil_ep23-29.zip && sha256sum /content/pac_full_task_hil_ep23-29.zip && cat pac_full_task_hil_ep23-29.zip.sha256
+rm -rf /content/data/pac_full_task_hil/meta /content/data/pac_full_task_hil/hil_labels.json
+unzip -q -o /content/pac_full_task_hil_ep23-29.zip -d /content/data
+```
