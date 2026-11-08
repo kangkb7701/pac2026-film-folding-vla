@@ -56,7 +56,7 @@
 
 ## 개입 데이터 (2026-10-07)
 
-`datasets/fold_film_onearm_hil`: 에피소드 53개, 26,311프레임. 노트북의 `remote_edge` 개입 모드로 모았고, 누가 조종했는지와 성공 여부는 `hil_labels.json`에 있습니다.
+[`kangkb7701/fold_film_onearm_hil`](https://huggingface.co/datasets/kangkb7701/fold_film_onearm_hil): 에피소드 53개, 26,311프레임. 노트북의 `remote_edge` 개입 모드로 모았고, 누가 조종했는지와 성공 여부는 `hil_labels.json`에 있습니다.
 
 - **구성:**
   - 정책만 돌린 에피소드 17개: 성공 8개, 실패 9개. 0~9번은 개입 없이 추세를 본 기준 실행입니다.

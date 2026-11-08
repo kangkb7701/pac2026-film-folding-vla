@@ -9,7 +9,7 @@
 # Usage (conda env lerobot061, from the repo root):
 #   bash gpu_dryrun/onsite_dryrun.sh <recorded dataset dir> <v2 checkpoint pretrained_model dir>
 # Example:
-#   bash gpu_dryrun/onsite_dryrun.sh datasets/fold_film_onearm_hil \
+#   bash gpu_dryrun/onsite_dryrun.sh ~/PAC_robotarm/lerobot_data/lerobot_data/fold_film_onearm_hil \
 #     ~/PAC_robotarm/outputs/train/smolvla_onearm_v2/checkpoints/020000/pretrained_model
 set -euo pipefail
 

@@ -74,10 +74,11 @@ lerobot-train \
 ### 5-1. 잘라낼 구간 정하기
 
 ```
-HIL=pac2026-film-folding-vla/datasets/fold_film_onearm_hil
+hf download kangkb7701/fold_film_onearm_hil --repo-type dataset --local-dir $DATA/fold_film_onearm_hil
+HIL=$DATA/fold_film_onearm_hil
 python - <<'EOF'
 import json
-L = json.load(open('pac2026-film-folding-vla/datasets/fold_film_onearm_hil/hil_labels.json'))
+L = json.load(open('lerobot_data/lerobot_data/fold_film_onearm_hil/hil_labels.json'))
 EXCLUDE = {23}             # 실패했는데 저장된 에피소드
 CUT_END = {10: 60, 13: 60}  # 끝에 사람 손이 들어온 에피소드: 잘라낼 프레임 수
 auto = [{"episode": e["episode_index"], "start": 0, "end": e["frames"]}

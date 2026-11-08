@@ -8,10 +8,10 @@
 2. conda 환경을 켭니다: `conda activate lerobot061` (LeRobot 0.6.1)
 3. 저장소 루트에서 실행합니다. 두 경로는 이 PC에 맞게 바꿉니다.
    ```bash
-   bash gpu_dryrun/onsite_dryrun.sh datasets/fold_film_onearm_hil \
+   bash gpu_dryrun/onsite_dryrun.sh ~/PAC_robotarm/lerobot_data/lerobot_data/fold_film_onearm_hil \
      ~/PAC_robotarm/outputs/train/smolvla_onearm_v2/checkpoints/020000/pretrained_model
    ```
-   - 첫 번째 인자: 녹화된 LeRobot 데이터셋 폴더. 저장소의 `datasets/fold_film_onearm_hil`(개입 데이터 53개)을 그대로 쓰면 됩니다.
+   - 첫 번째 인자: 녹화된 LeRobot 데이터셋 폴더. 개입 데이터 53개(`kangkb7701/fold_film_onearm_hil`)를 쓰면 됩니다. 없으면 `hf download kangkb7701/fold_film_onearm_hil --repo-type dataset --local-dir ~/PAC_robotarm/lerobot_data/lerobot_data/fold_film_onearm_hil`로 받습니다.
    - 두 번째 인자: 리허설 2차 학습 체크포인트(`smolvla_onearm_v2`의 2만 스텝 `pretrained_model` 폴더). 위치가 다르면 찾아서 넣습니다(`find ~ -path "*smolvla_onearm_v2*020000*pretrained_model" -maxdepth 8`).
 4. 결과를 아래 형식으로 보고합니다.
 

@@ -17,7 +17,10 @@ Physical AI Challenge 2026 준비 자료입니다. 투명 비닐을 반으로 �
 - `robot_scripts/`: 데이터셋 점검, 카메라 웹 뷰어, 한 팔 텔레오퍼레이션, 에피소드 라벨링 도구
     - `label_tool.bat <데이터셋 폴더>` 실행 후 http://127.0.0.1:8010 에서 영상을 보며 하위 과제가 시작되는 순간(1 끌어오기, 2 뜯기, 3 펴 놓기, 4 접기, 5 옮겨 놓기, 6 집어 넣기, 7 완료)와 결과(성공, 정렬 불량, 실패, 제외)를 표시합니다. 데이터셋 폴더의 `human_labels.json`에 바로 저장됩니다. 단계와 지시문은 `SARM_사람개입데이터_정리.md`의 "대회 과제 단계와 지시문"을 보세요.
     - `python export_sarm_labels.py <데이터셋 폴더>`: 라벨을 SARM 단계 라벨(LeRobot 형식)로 데이터셋에 써 넣고, SARM 학습 옵션을 출력합니다. 쓰기 전에 `meta/episodes`를 백업합니다.
-- `datasets/fold_film_onearm_hil/`: 2026-10-07 사람 개입 데이터(LeRobot v3.0, 53 에피소드, 26,311프레임, 30fps). 0~9번은 개입 없는 기준 실행(성공 2/10)이고, 누가 조종했는지와 성공/실패는 `hil_labels.json`에 있습니다. 시연 데이터(`fold_film_onearm_demo`, 50 에피소드)와 항목이 같아 그대로 합칠 수 있으며, 합치면 에피소드 번호가 밀리니 `hil_labels.json`도 같이 맞춰야 합니다.
+- 데이터셋은 Hugging Face에 있습니다(LeRobot v3.0, 30fps). `LeRobotDataset("kangkb7701/<이름>")`으로 바로 불러오거나 `hf download kangkb7701/<이름> --repo-type dataset --local-dir <폴더>`로 받습니다.
+    - [pac_full_task](https://huggingface.co/datasets/kangkb7701/pac_full_task): 대회 현장(2026-10-09~10) 양팔 전체 과제 시연 원본(51 에피소드, 119,835프레임)
+    - [pac_full_task_hil](https://huggingface.co/datasets/kangkb7701/pac_full_task_hil): 양팔 전체 과제에서 사람이 개입한 구간만 녹화한 데이터(30 에피소드, 55,347프레임)
+    - [fold_film_onearm_hil](https://huggingface.co/datasets/kangkb7701/fold_film_onearm_hil): 2026-10-07 한 팔 사람 개입 데이터(53 에피소드, 26,311프레임). 0~9번은 개입 없는 기준 실행(성공 2/10)이고, 누가 조종했는지와 성공/실패는 `hil_labels.json`에 있습니다. 시연 데이터(`fold_film_onearm_demo`, 50 에피소드)와 항목이 같아 그대로 합칠 수 있으며, 합치면 에피소드 번호가 밀리니 `hil_labels.json`도 같이 맞춰야 합니다.
 - `calibration/`: SO-101 캘리브레이션 파일. 2026-10-07에 실제 팔 위치에 맞게 이름을 바꿨습니다(예전 `_left`는 실제 오른팔). `calibration/README.md`를 보세요.
 - `3D프린팅_STL/`: 출력용 카메라 거치대(상단)와 카메라 일체형 그리퍼
 - `_카메라마운트_작업자료/`: 위 부품을 만든 작업 폴더(생성 스크립트, 원본 메시, 미리보기, 이전 버전)
@@ -36,4 +39,4 @@ Physical AI Challenge 2026 준비 자료입니다. 투명 비닐을 반으로 �
 
 ## 올리지 않은 것
 
-참가신청서(개인정보 포함), 학습 데이터(위 개입 데이터 제외), 실행 로그, 서버 토큰, 3D 미리보기 도구의 캐시와 오류 덤프
+참가신청서(개인정보 포함), 학습 데이터(위 Hugging Face 데이터셋 제외), 실행 로그, 서버 토큰, 3D 미리보기 도구의 캐시와 오류 덤프
