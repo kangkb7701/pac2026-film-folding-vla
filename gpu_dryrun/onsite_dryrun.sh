@@ -46,4 +46,4 @@ echo "== 4) server-style predict under both tasks"
 python gpu_dryrun/dryrun_predict.py --policy_path "$WORK/train/checkpoints/000200/pretrained_model" --tasks "$GRAB" "$FOLD"
 
 echo "== done: data prep $((T1 - T0))s, 200 training steps $((T2 - T1))s (batch 8), total $(( $(date +%s) - T0 ))s"
-echo "   (the real run uses batch 64: about 1.0 s/step on the 3090 per SmolVLA_파인튜닝_진행기록.md)"
+echo "   (the real run uses batch 64: about 1.0 s/step on the 3090 per docs/finetuning_log.md)"

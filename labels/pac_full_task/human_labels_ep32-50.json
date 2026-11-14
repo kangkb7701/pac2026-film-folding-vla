@@ -1,0 +1,555 @@
+{
+ "episodes": {
+  "32": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 49
+    },
+    {
+     "type": "lay_flat",
+     "frame": 251
+    },
+    {
+     "type": "fold_twice",
+     "frame": 584
+    },
+    {
+     "type": "place",
+     "frame": 910
+    },
+    {
+     "type": "pick_place",
+     "frame": 1177
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "33": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 966
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1179
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1393
+    },
+    {
+     "type": "place",
+     "frame": 1626
+    },
+    {
+     "type": "pick_place",
+     "frame": 1794
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "34": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 866
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1384
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1612
+    },
+    {
+     "type": "place",
+     "frame": 1974
+    },
+    {
+     "type": "pick_place",
+     "frame": 2155
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "35": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 1085
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1398
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1542
+    },
+    {
+     "type": "place",
+     "frame": 2216
+    },
+    {
+     "type": "pick_place",
+     "frame": 2488
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "36": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 857
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1144
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1562
+    },
+    {
+     "type": "place",
+     "frame": 1814
+    },
+    {
+     "type": "pick_place",
+     "frame": 1982
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "38": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 570
+    },
+    {
+     "type": "lay_flat",
+     "frame": 797
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1349
+    },
+    {
+     "type": "place",
+     "frame": 1940
+    },
+    {
+     "type": "pick_place",
+     "frame": 2406
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "39": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 785
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1491
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1871
+    },
+    {
+     "type": "place",
+     "frame": 2216
+    },
+    {
+     "type": "pick_place",
+     "frame": 2470
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "40": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 566
+    },
+    {
+     "type": "lay_flat",
+     "frame": 812
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1334
+    },
+    {
+     "type": "place",
+     "frame": 1642
+    },
+    {
+     "type": "pick_place",
+     "frame": 1927
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "41": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 872
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1156
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1361
+    },
+    {
+     "type": "place",
+     "frame": 1662
+    },
+    {
+     "type": "pick_place",
+     "frame": 1898
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "42": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 288
+    },
+    {
+     "type": "lay_flat",
+     "frame": 451
+    },
+    {
+     "type": "fold_twice",
+     "frame": 869
+    },
+    {
+     "type": "place",
+     "frame": 1592
+    },
+    {
+     "type": "pick_place",
+     "frame": 1878
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "43": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 706
+    },
+    {
+     "type": "lay_flat",
+     "frame": 931
+    },
+    {
+     "type": "fold_twice",
+     "frame": 2153
+    },
+    {
+     "type": "place",
+     "frame": 2737
+    },
+    {
+     "type": "pick_place",
+     "frame": 2940
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "44": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 628
+    },
+    {
+     "type": "lay_flat",
+     "frame": 794
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1123
+    },
+    {
+     "type": "place",
+     "frame": 1783
+    },
+    {
+     "type": "pick_place",
+     "frame": 1978
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "45": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 974
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1144
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1465
+    },
+    {
+     "type": "place",
+     "frame": 1828
+    },
+    {
+     "type": "pick_place",
+     "frame": 2095
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "46": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 698
+    },
+    {
+     "type": "lay_flat",
+     "frame": 884
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1146
+    },
+    {
+     "type": "place",
+     "frame": 1522
+    },
+    {
+     "type": "pick_place",
+     "frame": 1766
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "47": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 504
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1775
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1923
+    },
+    {
+     "type": "place",
+     "frame": 2509
+    },
+    {
+     "type": "pick_place",
+     "frame": 2668
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "48": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 521
+    },
+    {
+     "type": "lay_flat",
+     "frame": 689
+    },
+    {
+     "type": "fold_twice",
+     "frame": 861
+    },
+    {
+     "type": "place",
+     "frame": 1370
+    },
+    {
+     "type": "pick_place",
+     "frame": 1630
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "49": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 611
+    },
+    {
+     "type": "lay_flat",
+     "frame": 824
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1838
+    },
+    {
+     "type": "place",
+     "frame": 2034
+    },
+    {
+     "type": "pick_place",
+     "frame": 2298
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  },
+  "50": {
+   "events": [
+    {
+     "type": "pull_out",
+     "frame": 0
+    },
+    {
+     "type": "tear_off",
+     "frame": 551
+    },
+    {
+     "type": "lay_flat",
+     "frame": 1224
+    },
+    {
+     "type": "fold_twice",
+     "frame": 1737
+    },
+    {
+     "type": "place",
+     "frame": 2250
+    },
+    {
+     "type": "pick_place",
+     "frame": 2514
+    }
+   ],
+   "outcome": null,
+   "note": ""
+  }
+ },
+ "dataset": "C:\\Users\\user\\Desktop\\pac_full_task (3)\\pac_full_task",
+ "fps": 30,
+ "events": [
+  "pull_out",
+  "tear_off",
+  "lay_flat",
+  "fold_twice",
+  "place",
+  "pick_place",
+  "done"
+ ]
+}
