@@ -148,7 +148,3 @@ hardware/        3D 프린팅 부품(카메라 거치대, 카메라 일체형 �
 ## 하드웨어와 라이선스 고지
 
 3D 프린팅 부품과 출력·조립 안내는 `hardware/README.md`에 있습니다. 부품은 [TheRobotStudio/SO-ARM100](https://github.com/TheRobotStudio/SO-ARM100)의 카메라 거치대와 SO-101 메시를 바탕으로 한 것입니다. 원본은 Apache License 2.0이며, 전문은 `hardware/LICENSE-SO-ARM100.txt`에 있습니다.
-
-## 올리지 않은 것
-
-참가신청서(개인정보 포함), 학습 데이터(위 Hugging Face 데이터셋 제외), 실행 로그, 서버 토큰
