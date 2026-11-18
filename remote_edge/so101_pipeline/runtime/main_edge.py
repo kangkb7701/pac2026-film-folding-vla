@@ -77,10 +77,9 @@ HOME_MOVE_DURATION_S = 2.5
 HOME_MOVE_HZ = 30
 CAMERA_PRIME_TIMEOUT_MS = 2000  # first frame after connect; the sensor is still settling
 # PAC 2026: must match the dataset task string exactly (SmolVLA reads it as language input).
-ACT_ALLOWED_TASKS = (
-    "Pull out, tear off, lay flat, fold twice, and place the plastic bag on the paper, "
-    "then pick it up and put it into the target.",
-)
+# smolvla_full_v1 was trained with the recording sentence of pac_full_task (checked on dataset frames:
+# 2.5 deg error with it vs 9.6 deg with the newer "Pull out, tear off, ..." sentence).
+ACT_ALLOWED_TASKS = ("Tear off one sheet of film, fold it, and put it into the basket.",)
 # PAC 2026: cameras of the pac_full_task dataset; the dataset keys are the camera names.
 CAMERA_NAMES = ("top", "left_wrist", "right_wrist")
 POLICY_CAMERA_KEYS = {name: name for name in CAMERA_NAMES}
