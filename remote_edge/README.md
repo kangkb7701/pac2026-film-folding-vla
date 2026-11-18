@@ -101,7 +101,7 @@ python pac_policy_server.py --host 100.81.190.27 --port 8765 --token <토큰> --
 
 ## 4. 캡스톤 코드에서 바꾼 것과 근거
 
-- **지시문:** 바나나 과제 3개 대신 대회 상위 지시문 `Pull out, tear off, lay flat, fold twice, and place the plastic bag on the paper, then pick it up and put it into the target.` 하나. 데이터셋에 저장된 문장과 글자 하나까지 같아야 합니다. 원래 코드는 명령을 소문자로 바꿨는데, 이 문장은 그대로 넘깁니다.
+- **지시문:** 바나나 과제 3개 대신 `Tear off one sheet of film, fold it, and put it into the basket.` 하나. 대회 데이터를 녹화할 때 쓴 문장이고, `smolvla_full_v1`이 이 문장으로 학습됐습니다. 데이터셋 장면으로 시험했을 때 이 문장은 오차 2.5도, 새 상위 지시문(`Pull out, tear off, ...`)은 9.6도였습니다. 데이터셋에 저장된 문장과 글자 하나까지 같아야 합니다. 원래 코드는 명령을 소문자로 바꿨는데, 이 문장은 그대로 넘깁니다.
 - **카메라 이름:** `top`, `left_wrist`, `right_wrist`를 이름 그대로 서버에 보냅니다. 대회 데이터의 이름과 같습니다. 한 팔 리허설 때는 `camera1`, `camera2`로 바꿔 보냈습니다.
 - **카메라 설정:** `fourcc=MJPG`, OpenCV 기본 백엔드. 녹화할 때와 같은 설정이고, MJPG가 없으면 같은 허브의 두 번째 카메라부터 안 열립니다.
 - **제어 주기 30Hz:** 데이터셋 fps가 30입니다. 원래 코드는 10Hz였습니다.
